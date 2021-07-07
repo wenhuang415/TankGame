@@ -3,8 +3,8 @@
 
 | Student Information |                |
 |:-------------------:|----------------|
-|  Student Name       |   Cody Huang    |
-|  Student Email      |   whuang17@mail.sfsu.edu   |
+|  Student Name       |  Cody Huang    |
+|  Student Email      |whuang17@mail.sfsu.edu|
 
 ## src Folder Purpose 
 src folder is to be used to store source code only.
@@ -37,10 +37,10 @@ The jar folder is to be used to store the built jar of your term-project.
 
 |               | Player 1 | Player 2 |
 |---------------|----------|----------|
-|  Forward      |          |          |
-|  Backward     |          |          |
-|  Rotate left  |          |          |
-|  Rotate Right |          |          |
-|  Shoot        |          |          |
+|  Forward      |     w    |    up    |
+|  Backward     |     s    |  down    |
+|  Rotate left  |     a    |  left    |
+|  Rotate Right |     d    | right    |
+|  Shoot        |   Space  |Right Ctrl|
 
 <!-- you may add more controls if you need to. -->
