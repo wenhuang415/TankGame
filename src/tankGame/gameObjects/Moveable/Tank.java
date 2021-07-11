@@ -1,15 +1,15 @@
 package tankGame.gameObjects.Moveable;
 
+import tankGame.GameConstants;
+import tankGame.gameObjects.gameObject;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import tankGame.GameConstants;
-import tankGame.gameObjects.Moveable.Bullet;
-import tankGame.gameObjects.Moveable.moveable;
-import tankGame.gameObjects.gameObject;
 
 public class Tank extends moveable {
     private int health;
+
     private boolean UpPressed;
     private boolean DownPressed;
     private boolean RightPressed;
@@ -20,8 +20,8 @@ public class Tank extends moveable {
     private final float ROTATIONSPEED = 3.0f;
 
 
-    public Tank(int height, int width, float angle, BufferedImage img) {
-        super(height, width, angle, img, 0, 0);
+    public Tank(int x, int y, BufferedImage img) {
+        super(x, y,0,img,0 ,0 );
     }
 
 
@@ -29,13 +29,14 @@ public class Tank extends moveable {
     @Override
     public void resolveCollision(gameObject o){
         //if colliding object is a bullet then lose health
+        /*
         if(o instanceof Bullet) {
             Rectangle targetHitbox = ((Bullet) o).getHitbox();
             //if intersects set velocity to 0 and pushes position back until it doesn't intersect
             if(this.getHitbox().intersects(targetHitbox)) {
                 this.health -= 10;
             }
-        }
+        }*/
     }
 
     void toggleShootPressed() {this.ShootPressed = true; }
@@ -94,7 +95,7 @@ public class Tank extends moveable {
     }
 
     private void rotateLeft() {
-        this.setAngle(this.getAngle()- this.ROTATIONSPEED);
+        this.setAngle((this.getAngle()- this.ROTATIONSPEED));
     }
 
     private void rotateRight() {
@@ -123,14 +124,14 @@ public class Tank extends moveable {
         if (this.getX() < 30) {
             this.setX(30);
         }
-        if (this.getX() >= GameConstants.GAME_SCREEN_WIDTH - 88) {
-            this.setX(GameConstants.GAME_SCREEN_WIDTH - 88);
+        if (this.getX() >= GameConstants.WORLD_WIDTH- 88) {
+            this.setX(GameConstants.WORLD_WIDTH - 88);
         }
         if (this.getY() < 40) {
             this.setY(40);
         }
-        if (this.getY() >= GameConstants.GAME_SCREEN_HEIGHT - 80) {
-            this.setY(GameConstants.GAME_SCREEN_HEIGHT - 80);
+        if (this.getY() >= GameConstants.WORLD_HEIGHT - 80) {
+            this.setY(GameConstants.WORLD_HEIGHT - 80);
         }
     }
 
