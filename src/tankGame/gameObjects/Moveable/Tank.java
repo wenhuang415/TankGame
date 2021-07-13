@@ -7,10 +7,11 @@ import tankGame.gameObjects.gameObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Tank extends moveable {
     private int health;
-    private Bullet bullet;
+    private ArrayList<Bullet> ammo;
 
     private boolean UpPressed;
     private boolean DownPressed;
@@ -18,12 +19,13 @@ public class Tank extends moveable {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
-    private final int R = 2;
+    //private final int R = 2;
     private final float ROTATIONSPEED = 3.0f;
 
 
     public Tank(int x, int y, BufferedImage img) {
-        super(x, y,0,img,0 ,0 );
+        super(x, y,0,img,0 ,0 , 2);
+        this.ammo = new ArrayList<>();
     }
 
 
@@ -91,13 +93,11 @@ public class Tank extends moveable {
         if (this.RightPressed) {
             this.rotateRight();
         }
-        if (this.ShootPressed) {
-            bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
-
+        if (this.ShootPressed && gameLoader.tickCount % 10 == 0) {
+            Bullet bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
+            this.ammo.add(bullet);
         }
-        if(bullet!=null) {
-            bullet.moveForwards();
-        }
+        this.ammo.forEach(bullet -> bullet.moveForwards());
 
     }
 
@@ -109,39 +109,6 @@ public class Tank extends moveable {
         this.setAngle(this.getAngle() + this.ROTATIONSPEED);
     }
 
-    private void moveBackwards() {
-        this.setVx((int)Math.round(R * Math.cos(Math.toRadians(this.getAngle()))));
-        this.setVy((int)Math.round(R * Math.sin(Math.toRadians(this.getAngle()))));
-        this.setX(this.getX()-this.getVx());
-        this.setY(this.getY()-this.getVy());
-        checkBorder();
-    }
-
-    private void moveForwards() {
-        this.setVx((int)Math.round(R * Math.cos(Math.toRadians(this.getAngle()))));
-        this.setVy((int)Math.round(R * Math.sin(Math.toRadians(this.getAngle()))));
-        this.setX(this.getX()+this.getVx());
-        this.setY(this.getY()+this.getVy());
-        checkBorder();
-    }
-
-
-    private void checkBorder() {
-        if (this.getX() < 30) {
-            this.setX(30);
-        }
-        if (this.getX() >= GameConstants.WORLD_WIDTH- 88) {
-            this.setX(GameConstants.WORLD_WIDTH - 88);
-        }
-        if (this.getY() < 40) {
-            this.setY(40);
-        }
-        if (this.getY() >= GameConstants.WORLD_HEIGHT - 80) {
-            this.setY(GameConstants.WORLD_HEIGHT - 80);
-        }
-    }
-
-
 
 
     public void drawImage(Graphics g) {
@@ -149,7 +116,7 @@ public class Tank extends moveable {
         rotation.rotate(Math.toRadians(this.getAngle()), this.getImg().getWidth() / 2.0, this.getImg().getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.getImg(), rotation, null);
-        if(bullet!=null) bullet.drawImage(g);
+        this.ammo.forEach(bullet -> bullet.drawImage(g));
         g2d.setColor(Color.CYAN);
         g2d.drawImage(this.getImg(), rotation, null);
         g2d.drawRect(this.getX(),this.getY(),this.getImg().getWidth(),this.getImg().getHeight());

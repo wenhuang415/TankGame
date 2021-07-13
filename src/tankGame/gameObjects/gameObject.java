@@ -11,7 +11,6 @@ public abstract class gameObject implements collidable{
     public gameObject(int x, int y, BufferedImage img) {
         this.x = x;
         this.y = y;
-        //this.angle = angle;
         this.img = img;
     }
 
@@ -21,11 +20,8 @@ public abstract class gameObject implements collidable{
     //getters and setters
     public int getX(){ return this.x; }
     public int getY(){ return this.y; }
-    //public int getWidth(){ return this.width; }
-    //public int getHeight(){ return this.height; }
-    //public float getAngle() { return this.angle;}
     public BufferedImage getImg() {return this.img;}
-    //public void setAngle(float angle) {this.angle = angle;}
+    public void setImg(BufferedImage img) {this.img = img;}
     public void setX(int x){ this.x = x; }
     public void setY(int y){ this.y = y; }
 
