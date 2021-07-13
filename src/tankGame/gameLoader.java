@@ -64,8 +64,8 @@ public class gameLoader extends JPanel implements Runnable {
         this.tick = 0;
         this.t1.setX(300);
         this.t1.setY(300);
-        this.t2.setX(500);
-        this.t2.setY(500);
+        this.t2.setX(1300);
+        this.t2.setY(1300);
     }
 
     /**
@@ -93,6 +93,7 @@ public class gameLoader extends JPanel implements Runnable {
             unBreakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("unbreak.png")));
             //load bullet image
             gameLoader.bulletImage = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("bullet.png")));
+            //load background image
 
             //load map
             InputStreamReader isr = new InputStreamReader(gameLoader.class.getClassLoader().getResourceAsStream("maps/map1"));
@@ -132,12 +133,12 @@ public class gameLoader extends JPanel implements Runnable {
         }
 
         t1 = new Tank(300, 300,  t1img);
-        TankControl tc1 = new TankControl(t1, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_NUMPAD0);
+        TankControl tc1 = new TankControl(t1, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc1);
 
-        t2 = new Tank(500, 500,  t2img);
-        TankControl tc2 = new TankControl(t2, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_F);
+        t2 = new Tank(1300, 1300,  t2img);
+        TankControl tc2 = new TankControl(t2, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc2);
     }
@@ -148,8 +149,11 @@ public class gameLoader extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D buffer = world.createGraphics();
 
+
+        //set background to black to remove trails
         buffer.setColor(Color.BLACK);
         buffer.fillRect(0,0,GameConstants.WORLD_WIDTH,GameConstants.WORLD_HEIGHT);
+
         this.walls.forEach(wall -> wall.drawImage(buffer));
         this.t1.drawImage(buffer);
         this.t2.drawImage(buffer);
@@ -158,12 +162,10 @@ public class gameLoader extends JPanel implements Runnable {
         BufferedImage rightHalf = world.getSubimage(t2.getX()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.getY()-(GameConstants.GAME_SCREEN_HEIGHT/4),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
         BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
 
-
-
         g2.drawImage(leftHalf,0,0,null);
         g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
         g2.scale(.1,.1);
-        g2.drawImage(minimap, GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT,null);
+        g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+900,null);
         //g2.drawImage(world,0,0,null);
     }
 }
