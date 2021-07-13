@@ -1,6 +1,7 @@
 package tankGame.gameObjects.Moveable;
 
 import tankGame.GameConstants;
+import tankGame.gameLoader;
 import tankGame.gameObjects.gameObject;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class Tank extends moveable {
     private int health;
+    private Bullet bullet;
 
     private boolean UpPressed;
     private boolean DownPressed;
@@ -90,8 +92,13 @@ public class Tank extends moveable {
             this.rotateRight();
         }
         if (this.ShootPressed) {
-            this.shoot();
+            bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
+
         }
+        if(bullet!=null) {
+            bullet.moveForwards();
+        }
+
     }
 
     private void rotateLeft() {
@@ -118,7 +125,6 @@ public class Tank extends moveable {
         checkBorder();
     }
 
-    private void shoot() { }
 
     private void checkBorder() {
         if (this.getX() < 30) {
@@ -143,6 +149,10 @@ public class Tank extends moveable {
         rotation.rotate(Math.toRadians(this.getAngle()), this.getImg().getWidth() / 2.0, this.getImg().getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.getImg(), rotation, null);
+        if(bullet!=null) bullet.drawImage(g);
+        g2d.setColor(Color.CYAN);
+        g2d.drawImage(this.getImg(), rotation, null);
+        g2d.drawRect(this.getX(),this.getY(),this.getImg().getWidth(),this.getImg().getHeight());
     }
 
 }

@@ -3,7 +3,6 @@ package tankGame;
 import tankGame.gameObjects.Moveable.Tank;
 import tankGame.gameObjects.Moveable.TankControl;
 import tankGame.gameObjects.Stationary.BreakWall;
-import tankGame.gameObjects.Stationary.UnBreakWall;
 import tankGame.gameObjects.Stationary.Wall;
 
 import javax.swing.*;
@@ -26,6 +25,7 @@ public class gameLoader extends JPanel implements Runnable {
     private Launcher lf;
     private long tick = 0;
     ArrayList<Wall> walls;
+    public static BufferedImage bulletImage;
 
     public gameLoader(Launcher lf){
         this.lf = lf;
@@ -79,6 +79,7 @@ public class gameLoader extends JPanel implements Runnable {
         BufferedImage t2img = null;
         BufferedImage breakWall = null;
         BufferedImage unBreakWall = null;
+
         walls = new ArrayList<>();
         try {
             /*
@@ -89,6 +90,7 @@ public class gameLoader extends JPanel implements Runnable {
             t2img = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("tank2.png")));
             breakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("break.png")));
             unBreakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("unbreak.png")));
+            gameLoader.bulletImage = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("bullet.png")));
 
             //load map
             InputStreamReader isr = new InputStreamReader(gameLoader.class.getClassLoader().getResourceAsStream("maps/map1"));
@@ -124,12 +126,12 @@ public class gameLoader extends JPanel implements Runnable {
         }
 
         t1 = new Tank(300, 300,  t1img);
-        TankControl tc1 = new TankControl(t1, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
+        TankControl tc1 = new TankControl(t1, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_NUMPAD0);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc1);
 
         t2 = new Tank(500, 500,  t2img);
-        TankControl tc2 = new TankControl(t2, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
+        TankControl tc2 = new TankControl(t2, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_F);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc2);
     }
