@@ -1,17 +1,17 @@
 package tankGame.gameObjects.Stationary;
 
-
 import tankGame.gameObjects.gameObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BreakWall extends Wall{
-    private boolean broken;
+public class powerUp extends gameObject {
 
-    public BreakWall(int x, int y, BufferedImage img) {
-       super(x,y,img);
-        this.broken = false;
+    private boolean collected;
+
+    public powerUp(int x, int y, BufferedImage img) {
+        super(x, y, img);
+        this.collected = false;
     }
 
     @Override
@@ -21,10 +21,11 @@ public class BreakWall extends Wall{
 
     @Override
     public void drawImage(Graphics g) {
-        //only draw if wall is not broken
-        if(!broken) {
+        //only draw if power up is not collected
+        if(!collected) {
             Graphics2D g2 = (Graphics2D) g;
             g2.drawImage(this.getImg(), this.getX(), this.getY(), null);
         }
     }
+
 }

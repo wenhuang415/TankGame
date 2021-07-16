@@ -7,11 +7,21 @@ public abstract class gameObject implements collidable{
     private int x;
     private int y;
     private BufferedImage img;
+    private Rectangle hitbox;
 
     public gameObject(int x, int y, BufferedImage img) {
         this.x = x;
         this.y = y;
         this.img = img;
+        this.hitbox = new Rectangle(x,y,this.getImg().getWidth(),this.getImg().getHeight());
+    }
+
+    public Rectangle getHitbox() {
+        return hitbox.getBounds();
+    }
+
+    public void setHitbox(int x, int y) {
+        this.hitbox.setLocation(x,y);
     }
 
     @Override

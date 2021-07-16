@@ -25,6 +25,9 @@ abstract class moveable extends gameObject {
         this.setX(this.getX()+this.getVx());
         this.setY(this.getY()+this.getVy());
         checkBorder();
+        //System.out.println("x: "+this.getX()+"\t,y: " + this.getY());
+        //updates hitbox of moveable object
+        setHitbox(this.getX(),this.getY());
     }
 
     protected void moveBackwards() {
@@ -33,6 +36,8 @@ abstract class moveable extends gameObject {
         this.setX(this.getX()-this.getVx());
         this.setY(this.getY()-this.getVy());
         checkBorder();
+        //updates hitbox of moveable object
+        setHitbox(this.getX(),this.getY());
     }
 
     private void checkBorder() {

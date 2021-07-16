@@ -28,19 +28,31 @@ public class Tank extends moveable {
         this.ammo = new ArrayList<>();
     }
 
+    //function to limit x coordinate for split screen drawing
+    public int xLim(){
+        if(this.getX() < 280 ) {
+            return 280;
+        } else if(this.getX() > 1480){
+            return 1480;
+        } else {
+            return this.getX();
+        }
+    }
+    //function to limit y coordinate for split screen drawing
+    public int yLim(){
+        if(this.getY() < 200) {
+            return 200;
+        } else if(this.getY() > 1470){
+            return 1470;
+        } else {
+            return this.getY();
+        }
+    }
 
 
     @Override
     public void resolveCollision(gameObject o){
-        //if colliding object is a bullet then lose health
-        /*
-        if(o instanceof Bullet) {
-            Rectangle targetHitbox = ((Bullet) o).getHitbox();
-            //if intersects set velocity to 0 and pushes position back until it doesn't intersect
-            if(this.getHitbox().intersects(targetHitbox)) {
-                this.health -= 10;
-            }
-        }*/
+
     }
 
     void toggleShootPressed() {this.ShootPressed = true; }
@@ -93,12 +105,13 @@ public class Tank extends moveable {
         if (this.RightPressed) {
             this.rotateRight();
         }
-        if (this.ShootPressed && gameLoader.tickCount % 10 == 0) {
+        if (this.ShootPressed && gameLoader.tickCount % 40 == 0) {
             Bullet bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
             this.ammo.add(bullet);
         }
-        this.ammo.forEach(bullet -> bullet.moveForwards());
 
+        //move each bullet forward
+        this.ammo.forEach(bullet -> bullet.moveForwards());
     }
 
     private void rotateLeft() {
@@ -108,8 +121,6 @@ public class Tank extends moveable {
     private void rotateRight() {
         this.setAngle(this.getAngle() + this.ROTATIONSPEED);
     }
-
-
 
     public void drawImage(Graphics g) {
         AffineTransform rotation = AffineTransform.getTranslateInstance(this.getX(), this.getY());

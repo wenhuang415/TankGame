@@ -4,6 +4,7 @@ import tankGame.gameObjects.Moveable.Tank;
 import tankGame.gameObjects.Moveable.TankControl;
 import tankGame.gameObjects.Stationary.BreakWall;
 import tankGame.gameObjects.Stationary.Wall;
+import tankGame.gameObjects.Stationary.powerUp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class gameLoader extends JPanel implements Runnable {
     private Launcher lf;
     private long tick = 0;
     ArrayList<Wall> walls;
+    ArrayList<powerUp> powerUps;
     public static BufferedImage bulletImage;
     public static long tickCount = 0;
 
@@ -41,6 +43,10 @@ public class gameLoader extends JPanel implements Runnable {
                 this.t1.update(); // update tank
                 this.t2.update();
                 this.repaint();   // redraw game
+                //collision detection
+                if(t1.getHitbox().intersects(t2.getHitbox())) {
+                    System.out.println("tanks collided");
+                }
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
                 /*
@@ -81,6 +87,9 @@ public class gameLoader extends JPanel implements Runnable {
         BufferedImage t2img = null;
         BufferedImage breakWall = null;
         BufferedImage unBreakWall = null;
+        BufferedImage powerUpImg = null;
+        BufferedImage powerUpImg2 = null;
+        powerUps = new ArrayList<>();
         walls = new ArrayList<>();
         try {
             /*
@@ -91,6 +100,9 @@ public class gameLoader extends JPanel implements Runnable {
             t2img = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("tank2.png")));
             breakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("break.png")));
             unBreakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("unbreak.png")));
+            powerUpImg = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("powerup.png")));
+            powerUpImg2 = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("powerup2.png")));
+
             //load bullet image
             gameLoader.bulletImage = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("bullet.png")));
             //load background image
@@ -116,8 +128,10 @@ public class gameLoader extends JPanel implements Runnable {
                             this.walls.add(new BreakWall(curCol*32,curRow*32,breakWall));
                             break;
                         case "3"://powerup type1
+                            this.powerUps.add(new powerUp(curCol*32, curRow*32, powerUpImg));
                             break;
                         case "4"://powerup type2
+                            this.powerUps.add(new powerUp(curCol*32, curRow*32, powerUpImg2));
                             break;
                         case "8"://unbreakable wall
                         case "9"://border wall
@@ -143,6 +157,9 @@ public class gameLoader extends JPanel implements Runnable {
         this.lf.getJf().addKeyListener(tc2);
     }
 
+    //helper function to limit split screen camera bounds
+
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -155,11 +172,16 @@ public class gameLoader extends JPanel implements Runnable {
         buffer.fillRect(0,0,GameConstants.WORLD_WIDTH,GameConstants.WORLD_HEIGHT);
 
         this.walls.forEach(wall -> wall.drawImage(buffer));
+        this.powerUps.forEach(powerup -> powerup.drawImage(buffer));
         this.t1.drawImage(buffer);
         this.t2.drawImage(buffer);
 
-        BufferedImage leftHalf = world.getSubimage(t1.getX()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.getY()-(GameConstants.GAME_SCREEN_HEIGHT/4),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
-        BufferedImage rightHalf = world.getSubimage(t2.getX()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.getY()-(GameConstants.GAME_SCREEN_HEIGHT/4),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
+
+        //x min 244
+        //y min 210
+
+        BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/4),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
+        BufferedImage rightHalf = world.getSubimage(t2.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/4),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
         BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
 
         g2.drawImage(leftHalf,0,0,null);

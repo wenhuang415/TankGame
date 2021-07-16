@@ -8,11 +8,10 @@ import java.awt.image.BufferedImage;
 
 public class Bullet extends moveable {
     //private final int R = 7;
-    Rectangle hitBox;
+
 
     public Bullet(int x, int y, float angle, BufferedImage img) {
         super(x, y, angle, img,4,4, 7);
-        this.hitBox = new Rectangle(x,y,img.getWidth(),img.getHeight());
     }
 
     @Override
