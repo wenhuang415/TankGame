@@ -5,6 +5,7 @@ import tankGame.gameObjects.Moveable.TankControl;
 import tankGame.gameObjects.Stationary.BreakWall;
 import tankGame.gameObjects.Stationary.Wall;
 import tankGame.gameObjects.Stationary.powerUp;
+import tankGame.gameObjects.gameObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +31,8 @@ public class gameLoader extends JPanel implements Runnable {
     public static BufferedImage bulletImage;
     public static long tickCount = 0;
 
+
+
     public gameLoader(Launcher lf){
         this.lf = lf;
     }
@@ -43,10 +46,20 @@ public class gameLoader extends JPanel implements Runnable {
                 this.t1.update(); // update tank
                 this.t2.update();
                 this.repaint();   // redraw game
+
                 //collision detection
+                /*
                 if(t1.getHitbox().intersects(t2.getHitbox())) {
                     System.out.println("tanks collided");
                 }
+                 */
+                //resolve collision with wall
+                this.walls.forEach(wall -> t1.resolveCollision(wall));
+                this.walls.forEach(wall -> t2.resolveCollision(wall));
+                //resolve collision with other tank
+                t1.resolveCollision(t2);
+                t2.resolveCollision(t1);
+
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
                 /*

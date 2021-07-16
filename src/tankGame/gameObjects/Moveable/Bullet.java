@@ -14,9 +14,10 @@ public class Bullet extends moveable {
         super(x, y, angle, img,4,4, 7);
     }
 
+
     @Override
     public void resolveCollision(gameObject o) {
-
+        //this.delete;
     }
 
 

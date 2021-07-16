@@ -1,7 +1,7 @@
 package tankGame.gameObjects.Moveable;
 
-import tankGame.GameConstants;
 import tankGame.gameLoader;
+import tankGame.gameObjects.Stationary.Wall;
 import tankGame.gameObjects.gameObject;
 
 import java.awt.*;
@@ -26,6 +26,7 @@ public class Tank extends moveable {
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
         this.ammo = new ArrayList<>();
+        this.health = 5;
     }
 
     //function to limit x coordinate for split screen drawing
@@ -49,10 +50,30 @@ public class Tank extends moveable {
         }
     }
 
+    //getter for health
+    public int getHealth() {
+        return health;
+    }
 
     @Override
     public void resolveCollision(gameObject o){
-
+        //check if there is a collision
+        if(this.getHitbox().intersects(o.getHitbox())) {
+            //if tank collide with another tank or wall prevent it from moving foreward
+            if((o instanceof Wall) || (o instanceof Tank)) {
+                //move the tank forward if tank is moving backwards
+                if(this.DownPressed) {
+                    this.setX(this.getX()+this.getVx());
+                    this.setY(this.getY()+this.getVy());
+                    //move the tank backward if tank is moving forwards
+                } else if(this.UpPressed) {
+                    this.setX(this.getX()-this.getVx());
+                    this.setY(this.getY()-this.getVy());
+                }
+            } else if(o instanceof Bullet) {
+                this.health--;
+            }
+        }
     }
 
     void toggleShootPressed() {this.ShootPressed = true; }
