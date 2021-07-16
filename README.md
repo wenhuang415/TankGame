@@ -41,6 +41,6 @@ The jar folder is to be used to store the built jar of your term-project.
 |  Backward     |     s    |  down    |
 |  Rotate left  |     a    |  left    |
 |  Rotate Right |     d    | right    |
-|  Shoot        |   Space  |Right Ctrl|
+|  Shoot        |   Space  |Enter|
 
 <!-- you may add more controls if you need to. -->
