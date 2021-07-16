@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 public abstract class gameObject implements collidable{
     private int x;
     private int y;
-    private BufferedImage img;
+    private final BufferedImage img;
     private Rectangle hitbox;
 
     public gameObject(int x, int y, BufferedImage img) {
@@ -31,7 +31,6 @@ public abstract class gameObject implements collidable{
     public int getX(){ return this.x; }
     public int getY(){ return this.y; }
     public BufferedImage getImg() {return this.img;}
-    public void setImg(BufferedImage img) {this.img = img;}
     public void setX(int x){ this.x = x; }
     public void setY(int y){ this.y = y; }
 

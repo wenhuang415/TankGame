@@ -59,14 +59,14 @@ public class gameLoader extends JPanel implements Runnable {
                 //resolve collision with other tank
                 t1.resolveCollision(t2);
                 t2.resolveCollision(t1);
+                //resolve collision with bullets
+                t1.resolveBulletCollision(t2);
+                t2.resolveBulletCollision(t1);
 
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
-                /*
-                 * simulate an end game event
-                 * we will do this with by ending the game when drawn 2000 frames have been drawn
-                 */
-                if(this.tick > 4000){
+                //if health of either tank is 0 then end game
+                if((this.t1.getHealth()<1) || (this.t2.getHealth()<1)){
                     this.lf.setFrame("end");
                     return;
                 }
@@ -81,10 +81,13 @@ public class gameLoader extends JPanel implements Runnable {
      */
     public void resetGame(){
         this.tick = 0;
+        t1.setHealth(50);
+        t2.setHealth(50);
         this.t1.setX(300);
         this.t1.setY(300);
         this.t2.setX(1300);
         this.t2.setY(1300);
+
     }
 
     /**
@@ -160,12 +163,12 @@ public class gameLoader extends JPanel implements Runnable {
         }
 
         t1 = new Tank(300, 300,  t1img);
-        TankControl tc1 = new TankControl(t1, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
+        TankControl tc1 = new TankControl(t1, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc1);
 
         t2 = new Tank(1300, 1300,  t2img);
-        TankControl tc2 = new TankControl(t2, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
+        TankControl tc2 = new TankControl(t2, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc2);
     }

@@ -26,7 +26,7 @@ public class Tank extends moveable {
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
         this.ammo = new ArrayList<>();
-        this.health = 5;
+        this.health = 50;
     }
 
     //function to limit x coordinate for split screen drawing
@@ -70,11 +70,23 @@ public class Tank extends moveable {
                     this.setX(this.getX()-this.getVx());
                     this.setY(this.getY()-this.getVy());
                 }
-            } else if(o instanceof Bullet) {
-                this.health--;
             }
         }
     }
+
+    //function to resolve collsion of all bullets in ammo arrayList
+    public void resolveBulletCollision(gameObject o) {
+        for(int i = 0; i < ammo.size(); i++) {
+            Bullet b = ammo.get(i);
+            b.resolveCollision(o);
+            //if bullet collided with something then remove it
+            if(b.isCollided()) {
+                ammo.remove(i);
+                b = null;
+            }
+        }
+    }
+    //TODO resolve self collision with tank and its own bullet fired
 
     void toggleShootPressed() {this.ShootPressed = true; }
 
@@ -133,6 +145,12 @@ public class Tank extends moveable {
 
         //move each bullet forward
         this.ammo.forEach(bullet -> bullet.moveForwards());
+    }
+
+    public void takeDamage(){this.health--;}
+
+    public void setHealth(int hp) {
+        this.health = hp;
     }
 
     private void rotateLeft() {
