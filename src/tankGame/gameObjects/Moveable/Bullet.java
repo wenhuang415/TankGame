@@ -1,6 +1,7 @@
 package tankGame.gameObjects.Moveable;
 
 import tankGame.gameLoader;
+import tankGame.gameObjects.Stationary.Wall;
 import tankGame.gameObjects.gameObject;
 
 import java.awt.*;
@@ -24,6 +25,10 @@ public class Bullet extends moveable {
         if(o instanceof Tank && gameLoader.tickCount % 40 == 0) {
             System.out.println("hp: " + ((Tank) o).getHealth());
             ((Tank) o).takeDamage();
+            this.collided = true;
+        }
+
+        if(o instanceof Wall){
             this.collided = true;
         }
     }

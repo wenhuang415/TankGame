@@ -62,6 +62,7 @@ public class gameLoader extends JPanel implements Runnable {
                 //resolve collision with bullets
                 t1.resolveBulletCollision(t2);
                 t2.resolveBulletCollision(t1);
+                //resolve collision with bullet and wall
 
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
