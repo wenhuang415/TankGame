@@ -37,10 +37,10 @@ The jar folder is to be used to store the built jar of your term-project.
 
 |               | Player 1 | Player 2 |
 |---------------|----------|----------|
-|  Forward      |     w    |    up    |
-|  Backward     |     s    |  down    |
-|  Rotate left  |     a    |  left    |
-|  Rotate Right |     d    | right    |
-|  Shoot        |   Space  |Enter|
+|  Forward      |     W    |  Up      |
+|  Backward     |     S    |  Down    |
+|  Rotate left  |     A    |  Left    |
+|  Rotate Right |     D    |  Right   |
+|  Shoot        |   Space  |  Enter   |
 
 <!-- you may add more controls if you need to. -->
