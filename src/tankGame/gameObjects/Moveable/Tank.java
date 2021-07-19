@@ -36,8 +36,8 @@ public class Tank extends moveable {
         int limit = GameConstants.GAME_SCREEN_WIDTH/4;
         if(this.getX() < limit ) {
             return limit;
-        } else if(this.getX() > GameConstants.WORLD_WIDTH-limit){
-            return GameConstants.WORLD_WIDTH-limit;
+        } else if(this.getX() > GameConstants.WORLD_WIDTH-limit-10){
+            return GameConstants.WORLD_WIDTH-limit-10;
         } else {
             return this.getX();
         }
@@ -46,11 +46,11 @@ public class Tank extends moveable {
     //function to limit y coordinate for split screen drawing
     public int yLim(){
         //limit of how far to render to the top and bottom of screen
-        int limit = (GameConstants.GAME_SCREEN_HEIGHT/2);
+        int limit = GameConstants.GAME_SCREEN_HEIGHT/3;
         if(this.getY() < limit) {
             return limit;
-        } else if(this.getY() > GameConstants.WORLD_HEIGHT-limit){
-            return GameConstants.WORLD_HEIGHT-limit;
+        } else if(this.getY() > GameConstants.WORLD_HEIGHT-limit-280){
+            return GameConstants.WORLD_HEIGHT-limit-280;
         } else {
             return this.getY();
         }
