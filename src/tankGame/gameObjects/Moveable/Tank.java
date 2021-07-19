@@ -1,5 +1,6 @@
 package tankGame.gameObjects.Moveable;
 
+import tankGame.GameConstants;
 import tankGame.gameLoader;
 import tankGame.gameObjects.Stationary.Wall;
 import tankGame.gameObjects.gameObject;
@@ -31,20 +32,25 @@ public class Tank extends moveable {
 
     //function to limit x coordinate for split screen drawing
     public int xLim(){
-        if(this.getX() < 280 ) {
-            return 280;
-        } else if(this.getX() > 1480){
-            return 1480;
+        //limit of how far to render to the left and right of screen
+        int limit = GameConstants.GAME_SCREEN_WIDTH/4;
+        if(this.getX() < limit ) {
+            return limit;
+        } else if(this.getX() > GameConstants.WORLD_WIDTH-limit){
+            return GameConstants.WORLD_WIDTH-limit;
         } else {
             return this.getX();
         }
     }
+
     //function to limit y coordinate for split screen drawing
     public int yLim(){
-        if(this.getY() < 200) {
-            return 200;
-        } else if(this.getY() > 1470){
-            return 1470;
+        //limit of how far to render to the top and bottom of screen
+        int limit = (GameConstants.GAME_SCREEN_HEIGHT/2);
+        if(this.getY() < limit) {
+            return limit;
+        } else if(this.getY() > GameConstants.WORLD_HEIGHT-limit){
+            return GameConstants.WORLD_HEIGHT-limit;
         } else {
             return this.getY();
         }
@@ -86,7 +92,7 @@ public class Tank extends moveable {
             }
         }
     }
-    //TODO resolve self collision with tank and its own bullet fired
+
 
     void toggleShootPressed() {this.ShootPressed = true; }
 
@@ -138,7 +144,7 @@ public class Tank extends moveable {
         if (this.RightPressed) {
             this.rotateRight();
         }
-        if (this.ShootPressed && gameLoader.tickCount % 40 == 0) {
+        if (this.ShootPressed && gameLoader.tickCount % 30 == 0) {
             Bullet bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
             this.ammo.add(bullet);
         }

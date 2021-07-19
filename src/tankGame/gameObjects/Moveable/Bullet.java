@@ -20,16 +20,15 @@ public class Bullet extends moveable {
 
     @Override
     public void resolveCollision(gameObject o) {
-        //System.out.println("x,y: " + this.getX() + "," + this.getY());
-        //System.out.println("hitBox: "+this.getHitbox());
-        if(o instanceof Tank && gameLoader.tickCount % 40 == 0) {
-            System.out.println("hp: " + ((Tank) o).getHealth());
-            ((Tank) o).takeDamage();
-            this.collided = true;
-        }
-
-        if(o instanceof Wall){
-            this.collided = true;
+        if(this.getHitbox().intersects(o.getHitbox())){
+            if(o instanceof Tank) {
+                //System.out.println("hp: " + ((Tank) o).getHealth());
+                ((Tank) o).takeDamage();
+                this.collided = true;
+            }
+            if(o instanceof Wall){
+                this.collided = true;
+            }
         }
     }
 

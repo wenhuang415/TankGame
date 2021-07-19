@@ -47,12 +47,6 @@ public class gameLoader extends JPanel implements Runnable {
                 this.t2.update();
                 this.repaint();   // redraw game
 
-                //collision detection
-                /*
-                if(t1.getHitbox().intersects(t2.getHitbox())) {
-                    System.out.println("tanks collided");
-                }
-                 */
                 //resolve collision with wall
                 this.walls.forEach(wall -> t1.resolveCollision(wall));
                 this.walls.forEach(wall -> t2.resolveCollision(wall));
@@ -62,7 +56,13 @@ public class gameLoader extends JPanel implements Runnable {
                 //resolve collision with bullets
                 t1.resolveBulletCollision(t2);
                 t2.resolveBulletCollision(t1);
-                //resolve collision with bullet and wall
+                this.walls.forEach(wall -> t1.resolveBulletCollision(wall));
+                this.walls.forEach(wall -> t2.resolveBulletCollision(wall));
+                //todo make walls break
+                //todo render on edge of map
+                //todo powerups
+                //todo bullet types
+                //todo tank types
 
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
@@ -190,7 +190,8 @@ public class gameLoader extends JPanel implements Runnable {
 
         this.walls.forEach(wall -> wall.drawImage(buffer));
         this.powerUps.forEach(powerup -> powerup.drawImage(buffer));
-        this.t1.drawImage(buffer);
+        this.t1.
+                drawImage(buffer);
         this.t2.drawImage(buffer);
 
 
@@ -204,7 +205,7 @@ public class gameLoader extends JPanel implements Runnable {
         g2.drawImage(leftHalf,0,0,null);
         g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
         g2.scale(.1,.1);
-        g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+900,null);
+        g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+1150,null);
         //g2.drawImage(world,0,0,null);
     }
 }
