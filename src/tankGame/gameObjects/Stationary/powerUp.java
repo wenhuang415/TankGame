@@ -5,18 +5,21 @@ import tankGame.gameObjects.gameObject;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class powerUp extends gameObject {
+public abstract class powerUp extends gameObject {
 
-    private boolean collected;
+    protected boolean collected;
+
+    public void setCollected(boolean collected) {
+        this.collected = collected;
+    }
+
+    public boolean isCollected() {
+        return collected;
+    }
 
     public powerUp(int x, int y, BufferedImage img) {
         super(x, y, img);
         this.collected = false;
-    }
-
-    @Override
-    public void resolveCollision(gameObject o) {
-
     }
 
     @Override

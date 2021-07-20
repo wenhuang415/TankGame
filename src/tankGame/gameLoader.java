@@ -4,8 +4,8 @@ import tankGame.gameObjects.Moveable.Tank;
 import tankGame.gameObjects.Moveable.TankControl;
 import tankGame.gameObjects.Stationary.BreakWall;
 import tankGame.gameObjects.Stationary.Wall;
+import tankGame.gameObjects.Stationary.healthPowerUp;
 import tankGame.gameObjects.Stationary.powerUp;
-import tankGame.gameObjects.gameObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,8 +48,8 @@ public class gameLoader extends JPanel implements Runnable {
                 this.repaint();   // redraw game
 
                 //resolve collision with wall
-                this.walls.forEach(wall -> t1.resolveCollision(wall));
-                this.walls.forEach(wall -> t2.resolveCollision(wall));
+                //this.walls.forEach(wall -> t1.resolveCollision(wall));
+               // this.walls.forEach(wall -> t2.resolveCollision(wall));
                 //resolve collision with other tank
                 t1.resolveCollision(t2);
                 t2.resolveCollision(t1);
@@ -59,14 +59,28 @@ public class gameLoader extends JPanel implements Runnable {
                 //resolve bullet collision with wall
                 this.walls.forEach(wall -> t1.resolveBulletCollision(wall));
                 this.walls.forEach(wall -> t2.resolveBulletCollision(wall));
-                //if BreakWall is destoryed then remove it
+
                 for(int i = 0; i < walls.size(); i++) {
+                    //resolve tank collision with wall
+                    t1.resolveCollision(walls.get(i));
+                    t2.resolveCollision(walls.get(i));
+                    //if BreakWall is destoryed then remove it
                     if((walls.get(i) instanceof BreakWall) && ((BreakWall) walls.get(i)).isBroken() ) {
                         walls.remove(i);
                     }
                 }
 
-                //todo render on edge of map
+                //resolve collision of powerups
+                for(int i = 0; i<powerUps.size(); i++) {
+                    powerUps.get(i).resolveCollision(t1);
+                    powerUps.get(i).resolveCollision(t2);
+                    //if powerup is collected remove it
+                    if(powerUps.get(i).isCollected()) {
+                        powerUps.remove(i);
+                    }
+                }
+
+
                 //todo powerups
                 //todo bullet types
                 //todo tank types
@@ -89,8 +103,9 @@ public class gameLoader extends JPanel implements Runnable {
      */
     public void resetGame(){
         this.tick = 0;
-        t1.setHealth(50);
-        t2.setHealth(50);
+
+        t1.setHealth(10);
+        t2.setHealth(10);
         this.t1.setX(300);
         this.t1.setY(300);
         this.t2.setX(1300);
@@ -152,10 +167,10 @@ public class gameLoader extends JPanel implements Runnable {
                             this.walls.add(new BreakWall(curCol*32,curRow*32,breakWall));
                             break;
                         case "3"://powerup type1
-                            this.powerUps.add(new powerUp(curCol*32, curRow*32, powerUpImg));
+                            this.powerUps.add(new healthPowerUp(curCol*32, curRow*32, powerUpImg));
                             break;
                         case "4"://powerup type2
-                            this.powerUps.add(new powerUp(curCol*32, curRow*32, powerUpImg2));
+                            this.powerUps.add(new healthPowerUp(curCol*32, curRow*32, powerUpImg2));
                             break;
                         case "8"://unbreakable wall
                         case "9"://border wall

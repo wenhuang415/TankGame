@@ -22,7 +22,7 @@ public class Bullet extends moveable {
     public void resolveCollision(gameObject o) {
         if(this.getHitbox().intersects(o.getHitbox())){
             if(o instanceof Tank) {
-                //System.out.println("hp: " + ((Tank) o).getHealth());
+                System.out.println("Tank HP: " + ((Tank) o).getHealth());
                 ((Tank) o).takeDamage();
                 this.collided = true;
             }
