@@ -1,6 +1,6 @@
 package tankGame.gameObjects.Moveable;
 
-import tankGame.gameLoader;
+import tankGame.gameObjects.Stationary.BreakWall;
 import tankGame.gameObjects.Stationary.Wall;
 import tankGame.gameObjects.gameObject;
 
@@ -27,6 +27,9 @@ public class Bullet extends moveable {
                 this.collided = true;
             }
             if(o instanceof Wall){
+                if(o instanceof BreakWall){
+                    ((BreakWall)o).destroy(true);
+                }
                 this.collided = true;
             }
         }

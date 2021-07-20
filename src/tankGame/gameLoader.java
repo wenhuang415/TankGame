@@ -56,9 +56,16 @@ public class gameLoader extends JPanel implements Runnable {
                 //resolve collision with bullets
                 t1.resolveBulletCollision(t2);
                 t2.resolveBulletCollision(t1);
+                //resolve bullet collision with wall
                 this.walls.forEach(wall -> t1.resolveBulletCollision(wall));
                 this.walls.forEach(wall -> t2.resolveBulletCollision(wall));
-                //todo make walls break
+                //if BreakWall is destoryed then remove it
+                for(int i = 0; i < walls.size(); i++) {
+                    if((walls.get(i) instanceof BreakWall) && ((BreakWall) walls.get(i)).isBroken() ) {
+                        walls.remove(i);
+                    }
+                }
+
                 //todo render on edge of map
                 //todo powerups
                 //todo bullet types
@@ -187,11 +194,12 @@ public class gameLoader extends JPanel implements Runnable {
         //set background to black to remove trails
         buffer.setColor(Color.BLACK);
         buffer.fillRect(0,0,GameConstants.WORLD_WIDTH,GameConstants.WORLD_HEIGHT);
-
+        //paint the walls
         this.walls.forEach(wall -> wall.drawImage(buffer));
+        //paint powerups
         this.powerUps.forEach(powerup -> powerup.drawImage(buffer));
-        this.t1.
-                drawImage(buffer);
+        //draw the tanks
+        this.t1.drawImage(buffer);
         this.t2.drawImage(buffer);
 
 

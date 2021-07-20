@@ -1,8 +1,6 @@
 package tankGame.gameObjects.Stationary;
 
 
-import tankGame.gameObjects.gameObject;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -14,9 +12,12 @@ public class BreakWall extends Wall{
         this.broken = false;
     }
 
-    @Override
-    public void resolveCollision(gameObject o) {
+    public boolean isBroken() {
+        return broken;
+    }
 
+    public void destroy(boolean broken) {
+        this.broken = broken;
     }
 
     @Override

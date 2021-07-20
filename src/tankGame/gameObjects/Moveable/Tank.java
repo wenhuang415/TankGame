@@ -27,7 +27,7 @@ public class Tank extends moveable {
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
         this.ammo = new ArrayList<>();
-        this.health = 50;
+        this.health = 10;
     }
 
     //function to limit x coordinate for split screen drawing
