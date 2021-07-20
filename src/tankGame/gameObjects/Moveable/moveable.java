@@ -9,7 +9,7 @@ abstract class moveable extends gameObject {
     private int vx;
     private int vy;
     private float angle;
-    private int R;
+    private float R;
 
     public moveable(int x, int y, float angle, BufferedImage img, int vx, int vy, int R) {
         super(x, y, img);
@@ -61,12 +61,13 @@ abstract class moveable extends gameObject {
     public void setVx(int velocity) {this.vx=velocity;}
     public void setVy(int velocity) {this.vy=velocity;}
     public void setAngle(float angle) {this.angle=angle;}
+    public void setR(float R){this.R=R;}
 
     //getters
     public int getVx(){return this.vx;}
     public int getVy(){return this.vy;}
     public float getAngle(){return this.angle;}
-    public int getR() {return this.R;}
+    public float getR() {return this.R;}
 
 
 

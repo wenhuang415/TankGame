@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class Tank extends moveable {
     private int health;
     private ArrayList<Bullet> ammo;
+    private int fireRate = 50;
 
     private boolean UpPressed;
     private boolean DownPressed;
@@ -20,7 +21,7 @@ public class Tank extends moveable {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
-    //private final int R = 2;
+
     private final float ROTATIONSPEED = 3.0f;
 
 
@@ -56,10 +57,6 @@ public class Tank extends moveable {
         }
     }
 
-    //getter for health
-    public int getHealth() {
-        return health;
-    }
 
     @Override
     public void resolveCollision(gameObject o){
@@ -144,7 +141,7 @@ public class Tank extends moveable {
         if (this.RightPressed) {
             this.rotateRight();
         }
-        if (this.ShootPressed && gameLoader.tickCount % 30 == 0) {
+        if (this.ShootPressed && gameLoader.tickCount % fireRate == 0) {
             Bullet bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
             this.ammo.add(bullet);
         }
@@ -153,11 +150,21 @@ public class Tank extends moveable {
         this.ammo.forEach(bullet -> bullet.moveForwards());
     }
 
+    //getter for health
+    public int getHealth() {
+        return this.health;
+    }
+
+    //getter for fireRate
+    public int getFireRate(){return this.fireRate;}
+
     public void takeDamage(){this.health--;}
 
     public void setHealth(int hp) {
         this.health = hp;
     }
+
+    public void setFireRate(int fireRate) { this.fireRate = fireRate;}
 
     private void rotateLeft() {
         this.setAngle((this.getAngle()- this.ROTATIONSPEED));
@@ -166,6 +173,7 @@ public class Tank extends moveable {
     private void rotateRight() {
         this.setAngle(this.getAngle() + this.ROTATIONSPEED);
     }
+
 
     public void drawImage(Graphics g) {
         AffineTransform rotation = AffineTransform.getTranslateInstance(this.getX(), this.getY());
