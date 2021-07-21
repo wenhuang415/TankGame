@@ -49,7 +49,8 @@ public class gameLoader extends JPanel implements Runnable {
                 Clip clip;
                 try {
                     //background music code found on https://www.codegrepper.com/code-examples/java/music+loop+java
-                    AudioInputStream music = AudioSystem.getAudioInputStream(new File("resources/Music.wav"));
+                    //AudioInputStream music = AudioSystem.getAudioInputStream(new File("resources/Music.wav"));
+                    AudioInputStream music = AudioSystem.getAudioInputStream(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("Music.wav")));
                     clip = AudioSystem.getClip();
                     clip.open(music);
                     clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -249,16 +250,15 @@ public class gameLoader extends JPanel implements Runnable {
         Graphics2D g2 = (Graphics2D) g;
         Graphics2D buffer = world.createGraphics();
 
-
         //set background to black to remove trails
         buffer.setColor(Color.BLACK);
         buffer.fillRect(0,0,GameConstants.WORLD_WIDTH,GameConstants.WORLD_HEIGHT);
         try {
-            //paint the walls
+            //add walls to buffer
             this.walls.forEach(wall -> wall.drawImage(buffer));
-            //paint powerups
+            //add powerups to buffer
             this.powerUps.forEach(powerup -> powerup.drawImage(buffer));
-            //draw the tanks
+            //add tank to buffer
             this.t1.drawImage(buffer);
             this.t2.drawImage(buffer);
         } catch (ConcurrentModificationException e) {
@@ -266,14 +266,45 @@ public class gameLoader extends JPanel implements Runnable {
         }
 
 
-        BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
-        BufferedImage rightHalf = world.getSubimage(t2.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
-        BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
+        try {
+            //add lives to buffer
+            BufferedImage t1Lives = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("t1Lives.png")));
+            BufferedImage t2Lives = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("t2Lives.png")));
+            //crop lives image base on how many lives there are left
+            switch(t1.getLives()) {
+                case 2 :
+                    t1Lives = t1Lives.getSubimage(0,0, 104,45);
+                    break;
+                case 1 :
+                    t1Lives = t1Lives.getSubimage(0,0, 52,45);
+                    break;
+            }
+            switch(t2.getLives()) {
+                case 2 :
+                    t2Lives = t2Lives.getSubimage(0,0, 104,45);
+                    break;
+                case 1 :
+                    t2Lives = t2Lives.getSubimage(0,0, 52,45);
+                    break;
+            }
+            //add left half of split screen to buffer image
+            BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
+            //add right half of split screen to buffer image
+            BufferedImage rightHalf = world.getSubimage(t2.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
+            //add minimap to buffer image
+            BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
+            g2.drawImage(leftHalf,0,0,null);
+            g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
+            //draw lives scale down
+            g2.drawImage(t1Lives,0, 0, null);
+            g2.drawImage(t2Lives,GameConstants.GAME_SCREEN_WIDTH/2, 0, null);
+            g2.scale(.1,.1);
+            g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+1200,null);
 
-        g2.drawImage(leftHalf,0,0,null);
-        g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
-        g2.scale(.1,.1);
-        g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+1200,null);
-        //g2.drawImage(world,0,0,null);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
