@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class Tank extends moveable {
     private int health;
+    private int lives;
     private ArrayList<Bullet> ammo;
     private int fireRate = 50;
 
@@ -21,14 +22,19 @@ public class Tank extends moveable {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
-
     private final float ROTATIONSPEED = 3.0f;
-
 
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
         this.ammo = new ArrayList<>();
         this.health = 10;
+        this.lives = 3;
+    }
+
+    //function to reduce tank lives by 1
+    public void destroy(){
+        this.lives--;
+        System.out.println("lives: " + this.lives);
     }
 
     //function to limit x coordinate for split screen drawing
@@ -150,30 +156,28 @@ public class Tank extends moveable {
         this.ammo.forEach(bullet -> bullet.moveForwards());
     }
 
-    //getter for health
+    //getters
     public int getHealth() {
         return this.health;
     }
-
-    //getter for fireRate
     public int getFireRate(){return this.fireRate;}
+    public int getLives(){return this.lives;}
 
+    //setters
     public void takeDamage(){this.health--;}
-
     public void setHealth(int hp) {
         this.health = hp;
     }
-
     public void setFireRate(int fireRate) { this.fireRate = fireRate;}
-
     private void rotateLeft() {
         this.setAngle((this.getAngle()- this.ROTATIONSPEED));
     }
-
     private void rotateRight() {
         this.setAngle(this.getAngle() + this.ROTATIONSPEED);
     }
-
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
 
     public void drawImage(Graphics g) {
         AffineTransform rotation = AffineTransform.getTranslateInstance(this.getX(), this.getY());

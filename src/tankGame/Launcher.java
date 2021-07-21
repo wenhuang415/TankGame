@@ -59,6 +59,7 @@ public class Launcher {
         this.startPanel = new StartMenuPanel(this); // create a new start panel
         this.gamePanel = new gameLoader(this); // create a new game panel
         this.gamePanel.gameInitialize(); // initialize game, but DO NOT start game
+        this.gamePanel.backgroundMusic();
         this.endPanel = new EndGamePanel(this); // create a new end game pane;
         cl = new CardLayout(); // creating a new CardLayout Panel
         this.jf.setResizable(false); //make the JFrame not resizable

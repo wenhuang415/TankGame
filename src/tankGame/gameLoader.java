@@ -42,7 +42,7 @@ public class gameLoader extends JPanel implements Runnable {
     }
 
     //function that plays background music
-    public void background(){
+    public void backgroundMusic(){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -69,7 +69,6 @@ public class gameLoader extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        background();
         try {
             this.resetGame();
             while (true) {
@@ -111,12 +110,20 @@ public class gameLoader extends JPanel implements Runnable {
                     System.out.println(e);
                 }
 
-
+                //reset tank position and subtract lives if health drops to 0
+                if(t1.getHealth() < 1) {
+                    t1.destroy();
+                    resetTank();
+                }
+                if(t2.getHealth() < 1) {
+                    t2.destroy();
+                    resetTank();
+                }
 
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
-                //if health of either tank is 0 then end game
-                if((this.t1.getHealth()<1) || (this.t2.getHealth()<1)){
+                //if lives of either tank is 0 then end game
+                if((this.t1.getLives()<1)||(this.t2.getLives()<1)){
                     this.lf.setFrame("end");
                     return;
                 }
@@ -126,19 +133,24 @@ public class gameLoader extends JPanel implements Runnable {
         }
     }
 
-    /**
-     * Reset game to its initial state.
-     */
-    public void resetGame(){
-        this.tick = 0;
-
+    //function to reset position of tanks
+    private void resetTank(){
         t1.setHealth(10);
         t2.setHealth(10);
         this.t1.setX(300);
         this.t1.setY(300);
         this.t2.setX(1300);
         this.t2.setY(1300);
+    }
 
+    /**
+     * Reset game to its initial state.
+     */
+    public void resetGame(){
+        t1.setLives(3);
+        t2.setLives(3);
+        this.tick = 0;
+        resetTank();
     }
 
     /**
