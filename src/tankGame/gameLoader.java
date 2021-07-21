@@ -4,11 +4,13 @@ import tankGame.gameObjects.Moveable.Tank;
 import tankGame.gameObjects.Moveable.TankControl;
 import tankGame.gameObjects.Stationary.*;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -29,14 +31,45 @@ public class gameLoader extends JPanel implements Runnable {
     public static BufferedImage bulletImage;
     public static long tickCount = 0;
 
+    //todo bullet types
+    //todo tank types
+    //todo HUD
+
 
 
     public gameLoader(Launcher lf){
         this.lf = lf;
     }
 
+    //function that plays background music
+    public void background(){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clip clip;
+                try {
+                    //background music code found on https://www.codegrepper.com/code-examples/java/music+loop+java
+                    AudioInputStream music = AudioSystem.getAudioInputStream(new File("resources/Music.wav"));
+                    clip = AudioSystem.getClip();
+                    clip.open(music);
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    clip.start();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+    }
+
+
     @Override
     public void run() {
+        background();
         try {
             this.resetGame();
             while (true) {
@@ -44,10 +77,6 @@ public class gameLoader extends JPanel implements Runnable {
                 this.t1.update(); // update tank
                 this.t2.update();
                 this.repaint();   // redraw game
-
-                //resolve collision with wall
-                //this.walls.forEach(wall -> t1.resolveCollision(wall));
-               // this.walls.forEach(wall -> t2.resolveCollision(wall));
                 try {
                     //resolve collision with other tank
                     t1.resolveCollision(t2);
@@ -83,10 +112,6 @@ public class gameLoader extends JPanel implements Runnable {
                 }
 
 
-
-                //todo powerups
-                //todo bullet types
-                //todo tank types
 
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
@@ -205,8 +230,6 @@ public class gameLoader extends JPanel implements Runnable {
         this.lf.getJf().addKeyListener(tc2);
     }
 
-    //helper function to limit split screen camera bounds
-
 
 
     @Override
@@ -230,10 +253,6 @@ public class gameLoader extends JPanel implements Runnable {
             System.out.println(e);
         }
 
-
-
-        //x min 244
-        //y min 210
 
         BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
         BufferedImage rightHalf = world.getSubimage(t2.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
