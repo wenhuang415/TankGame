@@ -243,6 +243,17 @@ public class gameLoader extends JPanel implements Runnable {
         this.lf.getJf().addKeyListener(tc2);
     }
 
+    //function to display player HP
+    private BufferedImage getHealth(Tank t) throws IOException {
+        //get health bar
+        BufferedImage hp = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("health.png")));
+        //crop health bar base on tank hp value
+        int width = t.getHealth() % 10;
+        if(t.getHealth() < 10) {
+            hp = hp.getSubimage(0,0,(60/10) * width,15);
+        }
+        return hp;
+    }
 
 
     @Override
@@ -264,7 +275,6 @@ public class gameLoader extends JPanel implements Runnable {
         } catch (ConcurrentModificationException e) {
             System.out.println(e);
         }
-
 
         try {
             //add lives to buffer
@@ -295,9 +305,12 @@ public class gameLoader extends JPanel implements Runnable {
             BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
             g2.drawImage(leftHalf,0,0,null);
             g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
-            //draw lives scale down
+            //draw lives
             g2.drawImage(t1Lives,0, 0, null);
             g2.drawImage(t2Lives,GameConstants.GAME_SCREEN_WIDTH/2, 0, null);
+            //draw hp bar of tanks
+            g2.drawImage(getHealth(t1),0,GameConstants.GAME_SCREEN_HEIGHT-55,null);
+            g2.drawImage(getHealth(t2),(GameConstants.GAME_SCREEN_WIDTH-80),GameConstants.GAME_SCREEN_HEIGHT-55,null);
             g2.scale(.1,.1);
             g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+1200,null);
 
