@@ -3,7 +3,7 @@ package tankGame.gameObjects;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public abstract class gameObject implements collidable{
+public abstract class gameObject{
     private int x;
     private int y;
     private final BufferedImage img;
@@ -16,6 +16,9 @@ public abstract class gameObject implements collidable{
         this.hitbox = new Rectangle(x,y,this.getImg().getWidth(),this.getImg().getHeight());
     }
 
+    public void update(){
+    }
+
     public Rectangle getHitbox() {
         return hitbox.getBounds();
     }
@@ -24,7 +27,6 @@ public abstract class gameObject implements collidable{
         this.hitbox.setLocation(x,y);
     }
 
-    @Override
     public abstract void resolveCollision(gameObject o);
 
     //getters and setters

@@ -1,6 +1,7 @@
 package tankGame.gameObjects.Moveable;
 
 import tankGame.GameConstants;
+import tankGame.Resource;
 import tankGame.gameLoader;
 import tankGame.gameObjects.Stationary.Wall;
 import tankGame.gameObjects.gameObject;
@@ -133,6 +134,7 @@ public class Tank extends moveable {
         this.LeftPressed = false;
     }
 
+    @Override
     public void update() {
         if (this.UpPressed) {
             this.moveForwards();
@@ -148,7 +150,7 @@ public class Tank extends moveable {
             this.rotateRight();
         }
         if (this.ShootPressed && gameLoader.tickCount % fireRate == 0) {
-            Bullet bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), gameLoader.bulletImage);
+            Bullet bullet = new Bullet(this.getX(),this.getY(),this.getAngle(), Resource.getImg("bulletImg"));
             this.ammo.add(bullet);
         }
 

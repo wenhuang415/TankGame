@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import java.util.Objects;
 import static javax.imageio.ImageIO.read;
 
 public class gameLoader extends JPanel implements Runnable {
-
     private BufferedImage world;
     private Tank t1;
     private Tank t2;
@@ -33,40 +31,10 @@ public class gameLoader extends JPanel implements Runnable {
 
     //todo bullet types
     //todo tank types
-    //todo HUD
-
-
 
     public gameLoader(Launcher lf){
         this.lf = lf;
     }
-
-    //function that plays background music
-    public void backgroundMusic(){
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Clip clip;
-                try {
-                    //background music code found on https://www.codegrepper.com/code-examples/java/music+loop+java
-                    //AudioInputStream music = AudioSystem.getAudioInputStream(new File("resources/Music.wav"));
-                    AudioInputStream music = AudioSystem.getAudioInputStream(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("Music.wav")));
-                    clip = AudioSystem.getClip();
-                    clip.open(music);
-                    clip.loop(Clip.LOOP_CONTINUOUSLY);
-                    clip.start();
-                } catch (UnsupportedAudioFileException e) {
-                    e.printStackTrace();
-                } catch (LineUnavailableException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
-    }
-
 
     @Override
     public void run() {
@@ -148,10 +116,8 @@ public class gameLoader extends JPanel implements Runnable {
      * Reset game to its initial state.
      */
     public void resetGame(){
-        t1.setLives(3);
-        t2.setLives(3);
         this.tick = 0;
-        resetTank();
+        gameInitialize();
     }
 
     /**
@@ -163,14 +129,6 @@ public class gameLoader extends JPanel implements Runnable {
                 GameConstants.WORLD_HEIGHT,
                 BufferedImage.TYPE_INT_RGB);
 
-        BufferedImage t1img = null;
-        BufferedImage t2img = null;
-        BufferedImage breakWall = null;
-        BufferedImage unBreakWall = null;
-        BufferedImage powerUpImg = null;
-        BufferedImage powerUpImg2 = null;
-        BufferedImage powerUpImg3 = null;
-
         powerUps = new ArrayList<>();
         walls = new ArrayList<>();
         try {
@@ -178,17 +136,6 @@ public class gameLoader extends JPanel implements Runnable {
              * note class loaders read files from the out folder (build folder in Netbeans) and not the
              * current working directory.
              */
-            t1img = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("tank1.png")));
-            t2img = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("tank2.png")));
-            breakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("break.png")));
-            unBreakWall = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("unbreak.png")));
-            powerUpImg = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("powerup.png")));
-            powerUpImg2 = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("powerup2.png")));
-            powerUpImg3 = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("powerup3.png")));
-
-            //load bullet image
-            gameLoader.bulletImage = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("bullet.png")));
-            //load background image
 
             //load map
             InputStreamReader isr = new InputStreamReader(gameLoader.class.getClassLoader().getResourceAsStream("maps/map1"));
@@ -208,20 +155,20 @@ public class gameLoader extends JPanel implements Runnable {
                 for(int curCol = 0; curCol < numCols; curCol++) {
                     switch(mapInfo[curCol]) {
                         case "2"://breakable wall
-                            this.walls.add(new BreakWall(curCol*32,curRow*32,breakWall));
+                            this.walls.add(new BreakWall(curCol*32,curRow*32,Resource.getImg("breakWall")));
                             break;
                         case "3"://health power up
-                            this.powerUps.add(new healthPowerUp(curCol*32, curRow*32, powerUpImg3));
+                            this.powerUps.add(new healthPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg3")));
                             break;
                         case "4"://speed power up
-                            this.powerUps.add(new speedPowerUp(curCol*32, curRow*32, powerUpImg2));
+                            this.powerUps.add(new speedPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg2")));
                             break;
                         case "5"://rapidfire power up
-                            this.powerUps.add(new rapidfirePowerUp(curCol*32, curRow*32, powerUpImg));
+                            this.powerUps.add(new rapidfirePowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg")));
                             break;
                         case "8"://unbreakable wall
                         case "9"://border wall
-                            this.walls.add(new Wall(curCol*32,curRow*32,unBreakWall));
+                            this.walls.add(new Wall(curCol*32,curRow*32,Resource.getImg("unBreakWall")));
                             break;
                     }
                 }
@@ -232,12 +179,12 @@ public class gameLoader extends JPanel implements Runnable {
             ex.printStackTrace();
         }
 
-        t1 = new Tank(300, 300,  t1img);
+        t1 = new Tank(300, 300,  Resource.getImg("t1img"));
         TankControl tc1 = new TankControl(t1, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc1);
 
-        t2 = new Tank(1300, 1300,  t2img);
+        t2 = new Tank(1300, 1300,  Resource.getImg("t2img"));
         TankControl tc2 = new TankControl(t2, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc2);
@@ -246,7 +193,7 @@ public class gameLoader extends JPanel implements Runnable {
     //function to display player HP
     private BufferedImage getHealth(Tank t) throws IOException {
         //get health bar
-        BufferedImage hp = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("health.png")));
+        BufferedImage hp = Resource.getImg("health");
         //crop health bar base on tank hp value
         int width = t.getHealth() % 10;
         if(t.getHealth() < 10) {
@@ -319,5 +266,31 @@ public class gameLoader extends JPanel implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    //function that plays background music
+    public void backgroundMusic(){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clip clip;
+                try {
+                    //background music code found on https://www.codegrepper.com/code-examples/java/music+loop+java
+                    //AudioInputStream music = AudioSystem.getAudioInputStream(new File("resources/Music.wav"));
+                    AudioInputStream music = AudioSystem.getAudioInputStream(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("Music.wav")));
+                    clip = AudioSystem.getClip();
+                    clip.open(music);
+                    clip.loop(Clip.LOOP_CONTINUOUSLY);
+                    clip.start();
+                } catch (UnsupportedAudioFileException e) {
+                    e.printStackTrace();
+                } catch (LineUnavailableException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
     }
 }
