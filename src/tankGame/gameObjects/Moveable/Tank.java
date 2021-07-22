@@ -9,13 +9,17 @@ import tankGame.gameObjects.gameObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
+
+import static javax.imageio.ImageIO.read;
 
 public class Tank extends moveable {
     private int health;
     private int lives;
     private ArrayList<Bullet> ammo;
-    private int fireRate = 50;
+
 
     private boolean UpPressed;
     private boolean DownPressed;
@@ -24,6 +28,7 @@ public class Tank extends moveable {
     private boolean ShootPressed;
 
     private final float ROTATIONSPEED = 3.0f;
+    private int fireRate = 50;
 
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
@@ -62,6 +67,32 @@ public class Tank extends moveable {
         } else {
             return this.getY();
         }
+    }
+
+    //function to get tank hp bar
+    public BufferedImage displayHealth(){
+        //get health bar
+        BufferedImage hp = Resource.getImg("health");
+        //crop health bar base on tank hp value
+        int width = health % 10;
+        if(health < 10) {
+            hp = hp.getSubimage(0,0,(60/10) * width,15);
+        }
+        return hp;
+    }
+
+    //function to display amount of lives
+    public BufferedImage displayLives(BufferedImage lives) {
+        //crop lives image base on how many lives there are left
+        switch(this.lives) {
+            case 2 :
+                lives = lives.getSubimage(0,0, 104,45);
+                break;
+            case 1 :
+                lives = lives.getSubimage(0,0, 52,45);
+                break;
+        }
+        return lives;
     }
 
 
@@ -136,6 +167,7 @@ public class Tank extends moveable {
 
     @Override
     public void update() {
+        super.update();
         if (this.UpPressed) {
             this.moveForwards();
         }

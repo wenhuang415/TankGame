@@ -16,17 +16,13 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
-import static javax.imageio.ImageIO.read;
-
 public class gameLoader extends JPanel implements Runnable {
     private BufferedImage world;
     private Tank t1;
     private Tank t2;
     private Launcher lf;
-    private long tick = 0;
     ArrayList<Wall> walls;
     ArrayList<powerUp> powerUps;
-    public static BufferedImage bulletImage;
     public static long tickCount = 0;
 
     //todo bullet types
@@ -41,7 +37,6 @@ public class gameLoader extends JPanel implements Runnable {
         try {
             this.resetGame();
             while (true) {
-                this.tick++;
                 this.t1.update(); // update tank
                 this.t2.update();
                 this.repaint();   // redraw game
@@ -102,23 +97,7 @@ public class gameLoader extends JPanel implements Runnable {
         }
     }
 
-    //function to reset position of tanks
-    private void resetTank(){
-        t1.setHealth(10);
-        t2.setHealth(10);
-        this.t1.setX(300);
-        this.t1.setY(300);
-        this.t2.setX(1300);
-        this.t2.setY(1300);
-    }
 
-    /**
-     * Reset game to its initial state.
-     */
-    public void resetGame(){
-        this.tick = 0;
-        gameInitialize();
-    }
 
     /**
      * Load all resources for Tank Wars Game. Set all Game Objects to their
@@ -190,19 +169,6 @@ public class gameLoader extends JPanel implements Runnable {
         this.lf.getJf().addKeyListener(tc2);
     }
 
-    //function to display player HP
-    private BufferedImage getHealth(Tank t) throws IOException {
-        //get health bar
-        BufferedImage hp = Resource.getImg("health");
-        //crop health bar base on tank hp value
-        int width = t.getHealth() % 10;
-        if(t.getHealth() < 10) {
-            hp = hp.getSubimage(0,0,(60/10) * width,15);
-        }
-        return hp;
-    }
-
-
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
@@ -223,49 +189,46 @@ public class gameLoader extends JPanel implements Runnable {
             System.out.println(e);
         }
 
-        try {
-            //add lives to buffer
-            BufferedImage t1Lives = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("t1Lives.png")));
-            BufferedImage t2Lives = read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("t2Lives.png")));
-            //crop lives image base on how many lives there are left
-            switch(t1.getLives()) {
-                case 2 :
-                    t1Lives = t1Lives.getSubimage(0,0, 104,45);
-                    break;
-                case 1 :
-                    t1Lives = t1Lives.getSubimage(0,0, 52,45);
-                    break;
-            }
-            switch(t2.getLives()) {
-                case 2 :
-                    t2Lives = t2Lives.getSubimage(0,0, 104,45);
-                    break;
-                case 1 :
-                    t2Lives = t2Lives.getSubimage(0,0, 52,45);
-                    break;
-            }
-            //add left half of split screen to buffer image
-            BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
-            //add right half of split screen to buffer image
-            BufferedImage rightHalf = world.getSubimage(t2.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
-            //add minimap to buffer image
-            BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
-            g2.drawImage(leftHalf,0,0,null);
-            g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
-            //draw lives
-            g2.drawImage(t1Lives,0, 0, null);
-            g2.drawImage(t2Lives,GameConstants.GAME_SCREEN_WIDTH/2, 0, null);
-            //draw hp bar of tanks
-            g2.drawImage(getHealth(t1),0,GameConstants.GAME_SCREEN_HEIGHT-55,null);
-            g2.drawImage(getHealth(t2),(GameConstants.GAME_SCREEN_WIDTH-80),GameConstants.GAME_SCREEN_HEIGHT-55,null);
-            g2.scale(.1,.1);
-            g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+1200,null);
+        //add lives to buffer
+        BufferedImage t1Lives = t1.displayLives(Resource.getImg("t1Lives"));
+        BufferedImage t2Lives = t2.displayLives(Resource.getImg("t2Lives"));
 
+        //add left half of split screen to buffer image
+        BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
+        //add right half of split screen to buffer image
+        BufferedImage rightHalf = world.getSubimage(t2.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t2.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
+        //add minimap to buffer image
+        BufferedImage minimap = world.getSubimage(0,0,GameConstants.WORLD_WIDTH, GameConstants.WORLD_HEIGHT);
+        g2.drawImage(leftHalf,0,0,null);
+        g2.drawImage(rightHalf,GameConstants.GAME_SCREEN_WIDTH/2 + 4,0,null);
+        //draw lives
+        g2.drawImage(t1Lives,0, 0, null);
+        g2.drawImage(t2Lives,GameConstants.GAME_SCREEN_WIDTH/2, 0, null);
+        //draw hp bar of tanks
+        g2.drawImage(t1.displayHealth(),0,GameConstants.GAME_SCREEN_HEIGHT-55,null);
+        g2.drawImage(t2.displayHealth(),(GameConstants.GAME_SCREEN_WIDTH-80),GameConstants.GAME_SCREEN_HEIGHT-55,null);
+        g2.scale(.1,.1);
+        g2.drawImage(minimap, GameConstants.WORLD_WIDTH*2,GameConstants.WORLD_HEIGHT*2+1200,null);
+    }
 
+    /**
+     * Reset game to its initial state.
+     */
+    public void resetGame(){
+        this.tickCount = 0;
+        gameInitialize();
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    //function to reset position of tanks
+    private void resetTank(){
+        t1.setHealth(10);
+        t2.setHealth(10);
+        this.t1.setX(300);
+        this.t1.setY(300);
+        this.t2.setX(1300);
+        this.t2.setY(1300);
+        t1.update();
+        t2.update();
     }
 
     //function that plays background music

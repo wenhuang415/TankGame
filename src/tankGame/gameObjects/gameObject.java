@@ -17,6 +17,7 @@ public abstract class gameObject{
     }
 
     public void update(){
+        this.hitbox = new Rectangle(x,y,this.getImg().getWidth(),this.getImg().getHeight());
     }
 
     public Rectangle getHitbox() {
