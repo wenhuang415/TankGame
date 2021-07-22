@@ -32,7 +32,7 @@ public abstract class gameObject{
 
     public abstract void resolveCollision(gameObject o);
 
-    public void Destroy() {
+    public void destroy() {
         this.destroyed = true;
     }
 

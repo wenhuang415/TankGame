@@ -76,11 +76,11 @@ public class gameLoader extends JPanel implements Runnable {
 
                 //reset tank position and subtract lives if health drops to 0
                 if(t1.getHealth() < 1) {
-                    t1.destroy();
+                    t1.reduceLife();
                     resetTank();
                 }
                 if(t2.getHealth() < 1) {
-                    t2.destroy();
+                    t2.reduceLife();
                     resetTank();
                 }
 

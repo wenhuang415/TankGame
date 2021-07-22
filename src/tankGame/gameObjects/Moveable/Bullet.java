@@ -9,12 +9,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class Bullet extends moveable {
-    private boolean collided;
-
 
     public Bullet(int x, int y, float angle, BufferedImage img) {
         super(x, y, angle, img,4,4, 7);
-        this.collided = false;
+
     }
 
 
@@ -29,19 +27,15 @@ public class Bullet extends moveable {
             if(o instanceof Tank) {
                 System.out.println("Tank HP: " + ((Tank) o).getHealth());
                 ((Tank) o).takeDamage();
-                this.collided = true;
+                super.destroy();
             }
             if(o instanceof Wall){
                 if(o instanceof BreakWall){
-                    ((BreakWall)o).Destroy();
+                    ((BreakWall)o).destroy();
                 }
-                this.collided = true;
+                super.destroy();
             }
         }
-    }
-
-    public boolean isCollided() {
-        return collided;
     }
 
     public void drawImage(Graphics g) {

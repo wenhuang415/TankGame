@@ -38,7 +38,7 @@ public class Tank extends moveable {
     }
 
     //function to reduce tank lives by 1
-    public void destroy(){
+    public void reduceLife(){
         this.lives--;
         System.out.println("lives: " + this.lives);
     }
@@ -121,7 +121,7 @@ public class Tank extends moveable {
             Bullet b = ammo.get(i);
             b.resolveCollision(o);
             //if bullet collided with something then remove it
-            if(b.isCollided()) {
+            if(b.isDestroyed()) {
                 ammo.remove(i);
                 b = null;
             }
