@@ -19,6 +19,11 @@ public class Bullet extends moveable {
 
 
     @Override
+    public void update() {
+        super.setHitbox(this.getX(),this.getY());
+    }
+
+    @Override
     public void resolveCollision(gameObject o) {
         if(this.getHitbox().intersects(o.getHitbox())){
             if(o instanceof Tank) {
@@ -28,7 +33,7 @@ public class Bullet extends moveable {
             }
             if(o instanceof Wall){
                 if(o instanceof BreakWall){
-                    ((BreakWall)o).destroy(true);
+                    ((BreakWall)o).Destroy();
                 }
                 this.collided = true;
             }

@@ -167,7 +167,7 @@ public class Tank extends moveable {
 
     @Override
     public void update() {
-        super.update();
+        super.setHitbox(this.getX(),this.getY());
         if (this.UpPressed) {
             this.moveForwards();
         }

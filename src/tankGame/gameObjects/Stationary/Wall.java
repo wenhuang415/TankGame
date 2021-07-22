@@ -10,6 +10,11 @@ public class Wall extends gameObject {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void resolveCollision(gameObject o) {
 
     }

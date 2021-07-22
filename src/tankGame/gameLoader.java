@@ -56,7 +56,7 @@ public class gameLoader extends JPanel implements Runnable {
                         t1.resolveCollision(walls.get(i));
                         t2.resolveCollision(walls.get(i));
                         //if BreakWall is destoryed then remove it
-                        if((walls.get(i) instanceof BreakWall) && ((BreakWall) walls.get(i)).isBroken() ) {
+                        if((walls.get(i) instanceof BreakWall) && ((BreakWall) walls.get(i)).isDestroyed() ) {
                             walls.remove(i);
                         }
                     }
@@ -66,7 +66,7 @@ public class gameLoader extends JPanel implements Runnable {
                         powerUps.get(i).resolveCollision(t1);
                         powerUps.get(i).resolveCollision(t2);
                         //if powerup is collected remove it
-                        if(powerUps.get(i).isCollected()) {
+                        if(powerUps.get(i).isDestroyed()) {
                             powerUps.remove(i);
                         }
                     }
@@ -115,11 +115,9 @@ public class gameLoader extends JPanel implements Runnable {
              * note class loaders read files from the out folder (build folder in Netbeans) and not the
              * current working directory.
              */
-
             //load map
             InputStreamReader isr = new InputStreamReader(gameLoader.class.getClassLoader().getResourceAsStream("maps/map1"));
             BufferedReader mapReader = new BufferedReader(isr);
-
             //read map data
             String row = mapReader.readLine();
             if(row == null) {

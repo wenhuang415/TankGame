@@ -11,12 +11,9 @@ public class rapidfirePowerUp extends powerUp{
     }
 
     @Override
-    public void resolveCollision(gameObject o) {
-        //if gameObject is a tank and hitbox intersects then add health to tank and set collected to true
-        if((o instanceof Tank) && (this.getHitbox().intersects(o.getHitbox()))) {
-            ((Tank) o).setFireRate(((Tank) o).getFireRate()-10);
-            this.collected = true;
-            System.out.println("Tank Firerate: " + ((Tank) o).getFireRate());
-        }
+    public void setEffects(Tank t) {
+        t.setFireRate(t.getFireRate()-10);
+        System.out.println("Tank Firerate: " + t.getFireRate());
     }
+
 }

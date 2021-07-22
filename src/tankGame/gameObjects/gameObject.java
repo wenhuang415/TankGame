@@ -8,17 +8,19 @@ public abstract class gameObject{
     private int y;
     private final BufferedImage img;
     private Rectangle hitbox;
+    private boolean destroyed;
+
+
 
     public gameObject(int x, int y, BufferedImage img) {
+        this.destroyed = false;
         this.x = x;
         this.y = y;
         this.img = img;
         this.hitbox = new Rectangle(x,y,this.getImg().getWidth(),this.getImg().getHeight());
     }
 
-    public void update(){
-        this.hitbox = new Rectangle(x,y,this.getImg().getWidth(),this.getImg().getHeight());
-    }
+    public abstract void update();
 
     public Rectangle getHitbox() {
         return hitbox.getBounds();
@@ -29,6 +31,14 @@ public abstract class gameObject{
     }
 
     public abstract void resolveCollision(gameObject o);
+
+    public void Destroy() {
+        this.destroyed = true;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 
     //getters and setters
     public int getX(){ return this.x; }
