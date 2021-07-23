@@ -3,6 +3,7 @@ package tankGame;
 import tankGame.gameObjects.Moveable.Tank;
 import tankGame.gameObjects.Moveable.TankControl;
 import tankGame.gameObjects.Stationary.*;
+import tankGame.gameObjects.gameObject;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
@@ -18,11 +19,8 @@ import java.util.Objects;
 
 public class gameLoader extends JPanel implements Runnable {
     private BufferedImage world;
-    private Tank t1;
-    private Tank t2;
     private Launcher lf;
-    ArrayList<Wall> walls;
-    ArrayList<powerUp> powerUps;
+    ArrayList<gameObject> gameObjects;
     public static long tickCount = 0;
 
     //todo bullet types
@@ -37,40 +35,22 @@ public class gameLoader extends JPanel implements Runnable {
         try {
             this.resetGame();
             while (true) {
-                this.t1.update(); // update tank
-                this.t2.update();
+                Tank t1 = (Tank)gameObjects.get(0);
+                Tank t2 = (Tank)gameObjects.get(1);
+                gameObjects.forEach(gameObject -> gameObject.update());
                 this.repaint();   // redraw game
                 try {
-                    //resolve collision with other tank
-                    t1.resolveCollision(t2);
-                    t2.resolveCollision(t1);
-                    //resolve collision with bullets
-                    //t1.resolveBulletCollision(t2);
-                    //t2.resolveBulletCollision(t1);
-                    //resolve bullet collision with wall
-                    //this.walls.forEach(wall -> t1.resolveBulletCollision(wall));
-                    //this.walls.forEach(wall -> t2.resolveBulletCollision(wall));
-
-                    for(int i = 0; i < walls.size(); i++) {
-                        //resolve tank collision with wall
-                        t1.resolveCollision(walls.get(i));
-                        t2.resolveCollision(walls.get(i));
-                        //if BreakWall is destoryed then remove it
-                        if((walls.get(i) instanceof BreakWall) && ((BreakWall) walls.get(i)).isDestroyed() ) {
-                            walls.remove(i);
-                        }
+                    //resolve collisions with tank 1 and all other gameObjects
+                    //tank 1 at index 0 so start at index 1
+                    for(int i = 1; i < gameObjects.size(); i++) {
+                        t1.resolveCollision(gameObjects.get(i));
+                        if(gameObjects.get(i).isDestroyed()) gameObjects.remove(i);
                     }
-
-                    //resolve collision of powerups
-                    for(int i = 0; i<powerUps.size(); i++) {
-                        //powerUps.get(i).resolveCollision(t1);
-                        //powerUps.get(i).resolveCollision(t2);
-                        t1.resolveCollision(powerUps.get(i));
-                        t2 .resolveCollision(powerUps.get(i));
-                        //if powerup is collected remove it
-                        if(powerUps.get(i).isDestroyed()) {
-                            powerUps.remove(i);
-                        }
+                    //resolve collisions with tank 2 and all other gameObjects
+                    for(int i = 0; i < gameObjects.size(); i++) {
+                        if(i == 1) i++;//tank2 at index 1 so skip index 1
+                        t2.resolveCollision(gameObjects.get(i));
+                        if(gameObjects.get(i).isDestroyed()) gameObjects.remove(i);
                     }
                 } catch(ConcurrentModificationException e) {
                     System.out.println(e);
@@ -89,7 +69,7 @@ public class gameLoader extends JPanel implements Runnable {
                 tickCount++;
                 Thread.sleep(1000 / 144); //sleep for a few milliseconds
                 //if lives of either tank is 0 then end game
-                if((this.t1.getLives()<1)||(this.t2.getLives()<1)){
+                if((t1.getLives()<1)||(t2.getLives()<1)){
                     this.lf.setFrame("end");
                     return;
                 }
@@ -110,8 +90,21 @@ public class gameLoader extends JPanel implements Runnable {
                 GameConstants.WORLD_HEIGHT,
                 BufferedImage.TYPE_INT_RGB);
 
-        powerUps = new ArrayList<>();
-        walls = new ArrayList<>();
+        gameObjects = new ArrayList<>();
+
+        Tank t1 = new Tank(300, 300,  Resource.getImg("t1img"));
+        TankControl tc1 = new TankControl(t1, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
+        this.setBackground(Color.BLACK);
+        this.lf.getJf().addKeyListener(tc1);
+
+        Tank t2 = new Tank(1300, 1300,  Resource.getImg("t2img"));
+        TankControl tc2 = new TankControl(t2, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
+        this.setBackground(Color.BLACK);
+        this.lf.getJf().addKeyListener(tc2);
+
+        gameObjects.add(t1);
+        gameObjects.add(t2);
+
         try {
             /*
              * note class loaders read files from the out folder (build folder in Netbeans) and not the
@@ -134,20 +127,20 @@ public class gameLoader extends JPanel implements Runnable {
                 for(int curCol = 0; curCol < numCols; curCol++) {
                     switch(mapInfo[curCol]) {
                         case "2"://breakable wall
-                            this.walls.add(new BreakWall(curCol*32,curRow*32,Resource.getImg("breakWall")));
+                            this.gameObjects.add(new BreakWall(curCol*32,curRow*32,Resource.getImg("breakWall")));
                             break;
                         case "3"://health power up
-                            this.powerUps.add(new healthPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg3")));
+                            this.gameObjects.add(new healthPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg3")));
                             break;
                         case "4"://speed power up
-                            this.powerUps.add(new speedPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg2")));
+                            this.gameObjects.add(new speedPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg2")));
                             break;
                         case "5"://rapidfire power up
-                            this.powerUps.add(new rapidfirePowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg")));
+                            this.gameObjects.add(new rapidfirePowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg")));
                             break;
                         case "8"://unbreakable wall
                         case "9"://border wall
-                            this.walls.add(new Wall(curCol*32,curRow*32,Resource.getImg("unBreakWall")));
+                            this.gameObjects.add(new Wall(curCol*32,curRow*32,Resource.getImg("unBreakWall")));
                             break;
                     }
                 }
@@ -158,15 +151,7 @@ public class gameLoader extends JPanel implements Runnable {
             ex.printStackTrace();
         }
 
-        t1 = new Tank(300, 300,  Resource.getImg("t1img"));
-        TankControl tc1 = new TankControl(t1, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
-        this.setBackground(Color.BLACK);
-        this.lf.getJf().addKeyListener(tc1);
 
-        t2 = new Tank(1300, 1300,  Resource.getImg("t2img"));
-        TankControl tc2 = new TankControl(t2, KeyEvent.VK_UP, KeyEvent.VK_DOWN, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT, KeyEvent.VK_ENTER);
-        this.setBackground(Color.BLACK);
-        this.lf.getJf().addKeyListener(tc2);
     }
 
     @Override
@@ -177,14 +162,13 @@ public class gameLoader extends JPanel implements Runnable {
         //set background to black to remove trails
         buffer.setColor(Color.BLACK);
         buffer.fillRect(0,0,GameConstants.WORLD_WIDTH,GameConstants.WORLD_HEIGHT);
+
+        Tank t1 = (Tank)gameObjects.get(0);
+        Tank t2 = (Tank)gameObjects.get(1);
         try {
-            //add walls to buffer
-            this.walls.forEach(wall -> wall.drawImage(buffer));
-            //add powerups to buffer
-            this.powerUps.forEach(powerup -> powerup.drawImage(buffer));
-            //add tank to buffer
-            this.t1.drawImage(buffer);
-            this.t2.drawImage(buffer);
+            //add gameObjects to buffer
+            this.gameObjects.forEach(gameObject -> gameObject.drawImage(buffer));
+
         } catch (ConcurrentModificationException e) {
             System.out.println(e);
         }
@@ -221,14 +205,16 @@ public class gameLoader extends JPanel implements Runnable {
 
     //function to reset position of tanks
     private void resetTank(){
+        Tank t1 = (Tank)gameObjects.get(0);
+        Tank t2 = (Tank)gameObjects.get(1);
         t1.setHealth(10);
         t2.setHealth(10);
         t1.setAngle(0);
         t2.setAngle(180);
-        this.t1.setX(300);
-        this.t1.setY(300);
-        this.t2.setX(1300);
-        this.t2.setY(1300);
+        t1.setX(300);
+        t1.setY(300);
+        t2.setX(1300);
+        t2.setY(1300);
         t1.update();
         t2.update();
     }

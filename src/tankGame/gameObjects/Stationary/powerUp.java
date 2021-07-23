@@ -23,11 +23,7 @@ public abstract class powerUp extends gameObject {
 
     @Override
     public void resolveCollision(gameObject o) {
-        //if gameObject is a tank and hitbox intersects then add health to tank and set collected to true
-        /*if((o instanceof Tank) && (this.getHitbox().intersects(o.getHitbox()))) {
-            this.setEffects((Tank) o);
-            super.destroy();
-        }*/
+
     }
 
     @Override

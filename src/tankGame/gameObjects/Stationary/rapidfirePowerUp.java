@@ -13,7 +13,7 @@ public class rapidfirePowerUp extends powerUp{
     @Override
     public void setEffects(Tank t) {
         t.setFireRate(t.getFireRate()-10);
-        System.out.println("Tank Firerate: " + t.getFireRate());
+        System.out.println("Tank Firerate increased");
     }
 
 }
