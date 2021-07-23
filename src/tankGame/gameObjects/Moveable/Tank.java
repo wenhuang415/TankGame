@@ -4,16 +4,13 @@ import tankGame.GameConstants;
 import tankGame.Resource;
 import tankGame.gameLoader;
 import tankGame.gameObjects.Stationary.Wall;
+import tankGame.gameObjects.Stationary.powerUp;
 import tankGame.gameObjects.gameObject;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
-
-import static javax.imageio.ImageIO.read;
 
 public class Tank extends moveable {
     private int health;
@@ -111,12 +108,14 @@ public class Tank extends moveable {
                     this.setX(this.getX()-this.getVx());
                     this.setY(this.getY()-this.getVy());
                 }
+                //if instance of power up, get the effect of the power up then destory powerup
+            } else if((o instanceof powerUp)) {
+                ((powerUp) o).setEffects(this);
+                o.destroy();
             }
         }
-    }
 
-    //function to resolve collsion of all bullets in ammo arrayList
-    public void resolveBulletCollision(gameObject o) {
+        //resolve ammo collision
         for(int i = 0; i < ammo.size(); i++) {
             Bullet b = ammo.get(i);
             b.resolveCollision(o);
@@ -127,6 +126,8 @@ public class Tank extends moveable {
             }
         }
     }
+
+
 
 
     void toggleShootPressed() {this.ShootPressed = true; }

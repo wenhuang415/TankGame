@@ -20,6 +20,7 @@ public abstract class gameObject{
         this.hitbox = new Rectangle(x,y,this.getImg().getWidth(),this.getImg().getHeight());
     }
 
+    public abstract void resolveCollision(gameObject o);
     public abstract void update();
 
     public Rectangle getHitbox() {
@@ -30,7 +31,7 @@ public abstract class gameObject{
         this.hitbox.setLocation(x,y);
     }
 
-    public abstract void resolveCollision(gameObject o);
+
 
     public void destroy() {
         this.destroyed = true;

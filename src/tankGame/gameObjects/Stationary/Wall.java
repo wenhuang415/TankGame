@@ -9,6 +9,7 @@ public class Wall extends gameObject {
         super(x, y, img);
     }
 
+
     @Override
     public void update() {
 

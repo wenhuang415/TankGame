@@ -45,11 +45,11 @@ public class gameLoader extends JPanel implements Runnable {
                     t1.resolveCollision(t2);
                     t2.resolveCollision(t1);
                     //resolve collision with bullets
-                    t1.resolveBulletCollision(t2);
-                    t2.resolveBulletCollision(t1);
+                    //t1.resolveBulletCollision(t2);
+                    //t2.resolveBulletCollision(t1);
                     //resolve bullet collision with wall
-                    this.walls.forEach(wall -> t1.resolveBulletCollision(wall));
-                    this.walls.forEach(wall -> t2.resolveBulletCollision(wall));
+                    //this.walls.forEach(wall -> t1.resolveBulletCollision(wall));
+                    //this.walls.forEach(wall -> t2.resolveBulletCollision(wall));
 
                     for(int i = 0; i < walls.size(); i++) {
                         //resolve tank collision with wall
@@ -63,8 +63,10 @@ public class gameLoader extends JPanel implements Runnable {
 
                     //resolve collision of powerups
                     for(int i = 0; i<powerUps.size(); i++) {
-                        powerUps.get(i).resolveCollision(t1);
-                        powerUps.get(i).resolveCollision(t2);
+                        //powerUps.get(i).resolveCollision(t1);
+                        //powerUps.get(i).resolveCollision(t2);
+                        t1.resolveCollision(powerUps.get(i));
+                        t2 .resolveCollision(powerUps.get(i));
                         //if powerup is collected remove it
                         if(powerUps.get(i).isDestroyed()) {
                             powerUps.remove(i);
@@ -221,6 +223,8 @@ public class gameLoader extends JPanel implements Runnable {
     private void resetTank(){
         t1.setHealth(10);
         t2.setHealth(10);
+        t1.setAngle(0);
+        t2.setAngle(180);
         this.t1.setX(300);
         this.t1.setY(300);
         this.t2.setX(1300);
