@@ -23,9 +23,6 @@ public class gameLoader extends JPanel implements Runnable {
     ArrayList<gameObject> gameObjects;
     public static long tickCount = 0;
 
-    //todo bullet types
-    //todo tank types
-
     public gameLoader(Launcher lf){
         this.lf = lf;
     }
@@ -176,7 +173,6 @@ public class gameLoader extends JPanel implements Runnable {
         //add lives to buffer
         BufferedImage t1Lives = t1.displayLives(Resource.getImg("t1Lives"));
         BufferedImage t2Lives = t2.displayLives(Resource.getImg("t2Lives"));
-
         //add left half of split screen to buffer image
         BufferedImage leftHalf = world.getSubimage(t1.xLim()-(GameConstants.GAME_SCREEN_WIDTH/4),t1.yLim()-(GameConstants.GAME_SCREEN_HEIGHT/3),GameConstants.GAME_SCREEN_WIDTH/2,GameConstants.GAME_SCREEN_HEIGHT);
         //add right half of split screen to buffer image
@@ -203,7 +199,7 @@ public class gameLoader extends JPanel implements Runnable {
         gameInitialize();
     }
 
-    //function to reset position of tanks
+    //function to reset position of tanks after one is destroyed
     private void resetTank(){
         Tank t1 = (Tank)gameObjects.get(0);
         Tank t2 = (Tank)gameObjects.get(1);
