@@ -5,10 +5,16 @@ import tankGame.gameObjects.gameObject;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * abstract class for moveable objects
+ */
 abstract class moveable extends gameObject {
+    //velocity for x and y
     private int vx;
     private int vy;
+    //angle for direction facing
     private float angle;
+    //speed value
     private float R;
 
     public moveable(int x, int y, float angle, BufferedImage img, int vx, int vy, int R) {
@@ -19,20 +25,25 @@ abstract class moveable extends gameObject {
         this.R = R;
     }
 
+    //function to move object forward
     protected void moveForwards() {
+        //calculate velocity
         this.setVx((int)Math.round(this.getR() * Math.cos(Math.toRadians(this.getAngle()))));
         this.setVy((int)Math.round(this.getR() * Math.sin(Math.toRadians(this.getAngle()))));
+        //set x and y position base on velocities
         this.setX(this.getX()+this.getVx());
         this.setY(this.getY()+this.getVy());
         checkBorder();
-        //System.out.println("x: "+this.getX()+"\t,y: " + this.getY());
         //updates hitbox of moveable object
         setHitbox(this.getX(),this.getY());
     }
 
+    //function to move object backwards
     protected void moveBackwards() {
+        //calculate velocity
         this.setVx((int)Math.round(this.getR() * Math.cos(Math.toRadians(this.getAngle()))));
         this.setVy((int)Math.round(this.getR() * Math.sin(Math.toRadians(this.getAngle()))));
+        //set x and y position base on velocities
         this.setX(this.getX()-this.getVx());
         this.setY(this.getY()-this.getVy());
         checkBorder();
@@ -40,6 +51,7 @@ abstract class moveable extends gameObject {
         setHitbox(this.getX(),this.getY());
     }
 
+    //function to check if we are at the edge of the map and prevents moving off the edge
     private void checkBorder() {
         if (this.getX() < 30) {
             this.setX(30);

@@ -8,6 +8,9 @@ import java.util.Objects;
 
 import static javax.imageio.ImageIO.read;
 
+/**
+ * class to load the BufferImage from resources
+ */
 public class Resource {
     private static Map<String, BufferedImage> resources;
 
@@ -30,6 +33,7 @@ public class Resource {
         }
     }
 
+    //function to return resource BufferImage
     public static BufferedImage getImg(String key) {
         return Resource.resources.get(key);
     }

@@ -23,15 +23,15 @@ The jar folder is to be used to store the built jar of your term-project.
 
 # Required Information when Submitting Tank Game
 
-## Version of Java Used:
+## Version of Java Used: java version "1.8.0_281"
 
-## IDE used: 
+## IDE used: IntelliJ Ulitmate Version: 2021.1.2 Build: 211.7442.40
 
-## Steps to Import project into IDE:
+## Steps to Import project into IDE: clone files from https://github.com/csc413-su21/csc413-tankgame-wenhuang415.git, import project using /src as main folder
 
-## Steps to Build your Project:
+## Steps to Build your Project: Build using Launcher with main function
  
-## Steps to run your Project:
+## Steps to run your Project: Run jar or build the launcher
 
 ## Controls to play your Game:
 

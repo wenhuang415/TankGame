@@ -27,13 +27,16 @@ public class gameLoader extends JPanel implements Runnable {
         this.lf = lf;
     }
 
+    //Function to run game state
     @Override
     public void run() {
         try {
             this.resetGame();
             while (true) {
+                //get tank from gameObjects array list
                 Tank t1 = (Tank)gameObjects.get(0);
                 Tank t2 = (Tank)gameObjects.get(1);
+                //update all gameObjects
                 gameObjects.forEach(gameObject -> gameObject.update());
                 this.repaint();   // redraw game
                 try {
@@ -83,12 +86,15 @@ public class gameLoader extends JPanel implements Runnable {
      * initial state as well.
      */
     public void gameInitialize() {
+        //initialize bufferImage for the world
         this.world = new BufferedImage(GameConstants.WORLD_WIDTH,
                 GameConstants.WORLD_HEIGHT,
                 BufferedImage.TYPE_INT_RGB);
 
+        //initialize arrayList of all gameObjects created
         gameObjects = new ArrayList<>();
 
+        //initialize tanks and tank controls
         Tank t1 = new Tank(300, 300,  Resource.getImg("t1img"));
         TankControl tc1 = new TankControl(t1, KeyEvent.VK_W, KeyEvent.VK_S, KeyEvent.VK_A, KeyEvent.VK_D, KeyEvent.VK_SPACE);
         this.setBackground(Color.BLACK);
@@ -99,14 +105,11 @@ public class gameLoader extends JPanel implements Runnable {
         this.setBackground(Color.BLACK);
         this.lf.getJf().addKeyListener(tc2);
 
+        //add Tanks to gameObjects arrayList
         gameObjects.add(t1);
         gameObjects.add(t2);
 
         try {
-            /*
-             * note class loaders read files from the out folder (build folder in Netbeans) and not the
-             * current working directory.
-             */
             //load map
             InputStreamReader isr = new InputStreamReader(gameLoader.class.getClassLoader().getResourceAsStream("maps/map1"));
             BufferedReader mapReader = new BufferedReader(isr);
@@ -114,7 +117,7 @@ public class gameLoader extends JPanel implements Runnable {
             String row = mapReader.readLine();
             if(row == null) {
                 throw new IOException("no data in file");
-            }
+            }//put map data into String[]
             String[] mapInfo = row.split("\t");
             int numCols = Integer.parseInt(mapInfo[0]);
             int numRows = Integer.parseInt(mapInfo[1]);
@@ -122,17 +125,17 @@ public class gameLoader extends JPanel implements Runnable {
                 row = mapReader.readLine();
                 mapInfo = row.split("\t");
                 for(int curCol = 0; curCol < numCols; curCol++) {
-                    switch(mapInfo[curCol]) {
-                        case "2"://breakable wall
+                    switch(mapInfo[curCol]) {//initialize gameObjects base on map info
+                        case "2"://breakable wall for value 2
                             this.gameObjects.add(new BreakWall(curCol*32,curRow*32,Resource.getImg("breakWall")));
                             break;
-                        case "3"://health power up
+                        case "3"://health power up for value 3
                             this.gameObjects.add(new healthPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg3")));
                             break;
-                        case "4"://speed power up
+                        case "4"://speed power up for value 4
                             this.gameObjects.add(new speedPowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg2")));
                             break;
-                        case "5"://rapidfire power up
+                        case "5"://rapidfire power upfor value 5
                             this.gameObjects.add(new rapidfirePowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg")));
                             break;
                         case "8"://unbreakable wall

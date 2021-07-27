@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
+/**
+ * Bullet class
+ */
 public class Bullet extends moveable {
 
     public Bullet(int x, int y, float angle, BufferedImage img) {
@@ -24,12 +27,15 @@ public class Bullet extends moveable {
     @Override
     public void resolveCollision(gameObject o) {
         if(this.getHitbox().intersects(o.getHitbox())){
+            //if collided with tank reduce tank HP and destroy itself
             if(o instanceof Tank) {
                 System.out.println("Tank HP: " + ((Tank) o).getHealth());
                 ((Tank) o).takeDamage();
                 super.destroy();
             }
+            //if collided with wall, destroy itself
             if(o instanceof Wall){
+                //if breakable wall destroy wall
                 if(o instanceof BreakWall){
                     ((BreakWall)o).destroy();
                 }

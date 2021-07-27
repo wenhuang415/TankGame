@@ -4,6 +4,9 @@ import tankGame.gameObjects.Moveable.Tank;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * speed powerup increase tank speed
+ */
 public class speedPowerUp extends powerUp{
     public speedPowerUp(int x, int y, BufferedImage img) {
         super(x, y, img);

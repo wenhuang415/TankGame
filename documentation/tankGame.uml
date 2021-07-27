@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>tankGame</OriginalElement>
+  <nodes>
+    <node x="1570.9285714285716" y="730.0">tankGame.gameLoader</node>
+    <node x="398.96428571428567" y="459.0">tankGame.gameObjects.Moveable.moveable</node>
+    <node x="390.99999999999994" y="0.0">tankGame.gameObjects.gameObject</node>
+    <node x="968.5" y="1270.5">tankGame.gameObjects.Stationary.healthPowerUp</node>
+    <node x="2082.0714285714284" y="667.1428571428571">tankGame.gameObjects.Moveable.TankControl</node>
+    <node x="779.5" y="1270.5">tankGame.gameObjects.Stationary.rapidfirePowerUp</node>
+    <node x="21.5" y="1270.5">tankGame.gameObjects.Stationary.BreakWall</node>
+    <node x="1146.5" y="1270.5">tankGame.gameObjects.Stationary.speedPowerUp</node>
+    <node x="1647.1428571428569" y="1138.0">tankGame.menus.StartMenuPanel</node>
+    <node x="0.0" y="602.5">tankGame.gameObjects.Stationary.Wall</node>
+    <node x="229.49999999999994" y="874.0">tankGame.gameObjects.Moveable.Tank</node>
+    <node x="528.5" y="1248.5">tankGame.gameObjects.Moveable.Bullet</node>
+    <node x="927.4642857142857" y="580.5">tankGame.gameObjects.Stationary.powerUp</node>
+    <node x="2022.8571428571431" y="1138.0">tankGame.menus.EndGamePanel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="tankGame.gameObjects.Moveable.moveable" target="tankGame.gameObjects.gameObject" relationship="GENERALIZATION">
+      <point x="0.0" y="-182.5" />
+      <point x="483.46428571428567" y="434.0" />
+      <point x="506.49999999999994" y="434.0" />
+      <point x="0.0" y="204.5" />
+    </edge>
+    <edge source="tankGame.gameObjects.Moveable.Tank" target="tankGame.gameObjects.Moveable.moveable" relationship="GENERALIZATION">
+      <point x="0.0" y="-424.5" />
+      <point x="368.99999999999994" y="849.0" />
+      <point x="483.46428571428567" y="849.0" />
+      <point x="0.0" y="182.5" />
+    </edge>
+    <edge source="tankGame.gameObjects.Stationary.speedPowerUp" target="tankGame.gameObjects.Stationary.powerUp" relationship="GENERALIZATION">
+      <point x="0.0" y="-28.0" />
+      <point x="1225.5" y="849.0" />
+      <point x="1042.9642857142858" y="849.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="tankGame.gameObjects.Stationary.BreakWall" target="tankGame.gameObjects.Stationary.Wall" relationship="GENERALIZATION">
+      <point x="0.0" y="-28.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="tankGame.gameObjects.Stationary.powerUp" target="tankGame.gameObjects.gameObject" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="1042.9642857142858" y="434.0" />
+      <point x="506.49999999999994" y="434.0" />
+      <point x="0.0" y="204.5" />
+    </edge>
+    <edge source="tankGame.gameObjects.Stationary.healthPowerUp" target="tankGame.gameObjects.Stationary.powerUp" relationship="GENERALIZATION">
+      <point x="0.0" y="-28.0" />
+      <point x="1047.5" y="849.0" />
+      <point x="1042.9642857142858" y="849.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+    <edge source="tankGame.gameObjects.Moveable.Bullet" target="tankGame.gameObjects.Moveable.moveable" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="644.0" y="849.0" />
+      <point x="483.46428571428567" y="849.0" />
+      <point x="0.0" y="182.5" />
+    </edge>
+    <edge source="tankGame.gameObjects.Stationary.Wall" target="tankGame.gameObjects.gameObject" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="115.5" y="434.0" />
+      <point x="506.49999999999994" y="434.0" />
+      <point x="0.0" y="204.5" />
+    </edge>
+    <edge source="tankGame.gameObjects.Stationary.rapidfirePowerUp" target="tankGame.gameObjects.Stationary.powerUp" relationship="GENERALIZATION">
+      <point x="0.0" y="-28.0" />
+      <point x="864.0" y="849.0" />
+      <point x="1042.9642857142858" y="849.0" />
+      <point x="0.0" y="61.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7000000000000001" showDependencies="false" x="729.0" y="1317.8571428571427" />
+  <SelectedNodes>
+    <node>tankGame.menus.StartMenuPanel</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

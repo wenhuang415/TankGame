@@ -12,11 +12,15 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+/**
+ * Tank class
+ */
 public class Tank extends moveable {
     private int health;
     private int lives;
     private ArrayList<Bullet> ammo;
-
+    private final float ROTATIONSPEED = 3.0f;
+    private int fireRate = 50;
 
     private boolean UpPressed;
     private boolean DownPressed;
@@ -24,8 +28,7 @@ public class Tank extends moveable {
     private boolean LeftPressed;
     private boolean ShootPressed;
 
-    private final float ROTATIONSPEED = 3.0f;
-    private int fireRate = 50;
+
 
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
@@ -34,13 +37,18 @@ public class Tank extends moveable {
         this.lives = 3;
     }
 
-    //function to reduce tank lives by 1
+    /**
+     * function to reduce tank hp by 1
+     */
     public void reduceLife(){
         this.lives--;
         System.out.println("lives: " + this.lives);
     }
 
-    //function to limit x coordinate for split screen drawing
+    /**
+     *  function to limit x coordinate for split screen drawing to not draw beyond edge of map
+     * @return x coordinate of where for camera on tank
+     */
     public int xLim(){
         //limit of how far to render to the left and right of screen
         int limit = GameConstants.GAME_SCREEN_WIDTH/4;
@@ -53,7 +61,10 @@ public class Tank extends moveable {
         }
     }
 
-    //function to limit y coordinate for split screen drawing
+    /**
+     *  function to limit y coordinate for split screen drawing to not draw beyond edge of map
+     * @return y coordinate of where for camera on tank
+     */
     public int yLim(){
         //limit of how far to render to the top and bottom of screen
         int limit = GameConstants.GAME_SCREEN_HEIGHT/3;
@@ -66,7 +77,10 @@ public class Tank extends moveable {
         }
     }
 
-    //function to get tank hp bar
+    /**
+     * Crop buffer image of HP bar to display
+     * @return bufferImage of the cropped HP value
+     */
     public BufferedImage displayHealth(){
         //get health bar
         BufferedImage hp = Resource.getImg("health");
@@ -78,7 +92,11 @@ public class Tank extends moveable {
         return hp;
     }
 
-    //function to display amount of lives
+    /**
+     * Crop buffer image of lives to display
+     * @param lives Buffer image of Lives
+     * @return cropped Buffer image of Lives
+     */
     public BufferedImage displayLives(BufferedImage lives) {
         //crop lives image base on how many lives there are left
         switch(this.lives) {
@@ -119,7 +137,7 @@ public class Tank extends moveable {
         for(int i = 0; i < ammo.size(); i++) {
             Bullet b = ammo.get(i);
             b.resolveCollision(o);
-            //if bullet collided with something then remove it
+            //if bullet collided with Wall or Tank then remove it
             if(b.isDestroyed()) {
                 ammo.remove(i);
                 b = null;
@@ -129,7 +147,7 @@ public class Tank extends moveable {
 
 
 
-
+    //setters for movement
     void toggleShootPressed() {this.ShootPressed = true; }
 
     void toggleUpPressed() {
@@ -166,6 +184,7 @@ public class Tank extends moveable {
         this.LeftPressed = false;
     }
 
+    //update tank position base on which way to move
     @Override
     public void update() {
         super.setHitbox(this.getX(),this.getY());
@@ -215,10 +234,12 @@ public class Tank extends moveable {
     }
 
     public void drawImage(Graphics g) {
+        //rotate tank
         AffineTransform rotation = AffineTransform.getTranslateInstance(this.getX(), this.getY());
         rotation.rotate(Math.toRadians(this.getAngle()), this.getImg().getWidth() / 2.0, this.getImg().getHeight() / 2.0);
         Graphics2D g2d = (Graphics2D) g;
         g2d.drawImage(this.getImg(), rotation, null);
+        //draw each bullet that tank fired
         this.ammo.forEach(bullet -> bullet.drawImage(g));
         g2d.setColor(Color.CYAN);
         g2d.drawImage(this.getImg(), rotation, null);

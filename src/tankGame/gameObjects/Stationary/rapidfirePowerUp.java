@@ -5,6 +5,9 @@ import tankGame.gameObjects.gameObject;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * rapidFire class increases fireRate
+ */
 public class rapidfirePowerUp extends powerUp{
     public rapidfirePowerUp(int x, int y, BufferedImage img) {
         super(x, y, img);
