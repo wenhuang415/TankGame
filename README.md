@@ -31,7 +31,7 @@ The jar folder is to be used to store the built jar of your term-project.
 
 ## Steps to Build your Project: Build using Launcher with main function
  
-## Steps to run your Project: Run jar or build the launcher
+## Steps to run your Project: Run jar or build the launcher and run that
 
 ## Controls to play your Game:
 
