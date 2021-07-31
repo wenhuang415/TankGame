@@ -47,6 +47,7 @@ public class gameLoader extends JPanel implements Runnable {
                         t1.resolveCollision(gameObjects.get(i));
                         //resolve collision for t1
                         gameObjects.get(i).resolveCollision(t1);
+                        //if a game object is destroyed then remove it
                         if(gameObjects.get(i).isDestroyed()) gameObjects.remove(i);
                     }
                     //resolve collisions with tank 2 and all other gameObjects
@@ -56,6 +57,7 @@ public class gameLoader extends JPanel implements Runnable {
                         t2.resolveCollision(gameObjects.get(i));
                         //resolve collision for t2
                         gameObjects.get(i).resolveCollision(t2);
+                        //if gameobject is destroyed then remove it
                         if(gameObjects.get(i).isDestroyed()) gameObjects.remove(i);
                     }
                 } catch(ConcurrentModificationException e) {
@@ -143,6 +145,9 @@ public class gameLoader extends JPanel implements Runnable {
                             break;
                         case "5"://rapidfire power upfor value 5
                             this.gameObjects.add(new rapidfirePowerUp(curCol*32, curRow*32, Resource.getImg("powerUpImg")));
+                            break;
+                        case "6"://traps
+                            this.gameObjects.add(new trap(curCol*32, curRow*32, Resource.getImg("trapImg")));
                             break;
                         case "8"://unbreakable wall
                         case "9"://border wall

@@ -20,7 +20,9 @@ public abstract class powerUp extends gameObject {
     public abstract void setEffects(Tank t);
 
     @Override
-    public void update(){}
+    public void update(){
+        super.setHitbox(this.getX(),this.getY());
+    }
 
 
     @Override

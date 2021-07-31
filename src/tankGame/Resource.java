@@ -28,6 +28,7 @@ public class Resource {
             Resource.resources.put("t1Lives",read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("t1Lives.png"))));
             Resource.resources.put("t2Lives",read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("t2Lives.png"))));
             Resource.resources.put("health",read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("health.png"))));
+            Resource.resources.put("trapImg",read(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("trap.png"))));
         } catch (IOException e) {
             e.printStackTrace();
         }

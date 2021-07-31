@@ -15,7 +15,7 @@ public class Wall extends gameObject {
 
     @Override
     public void update() {
-
+        super.setHitbox(this.getX(),this.getY());
     }
 
     @Override
