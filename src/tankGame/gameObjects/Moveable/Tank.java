@@ -115,8 +115,8 @@ public class Tank extends moveable {
     public void resolveCollision(gameObject o){
         //check if there is a collision
         if(this.getHitbox().intersects(o.getHitbox())) {
-            //if tank collide with another tank or wall prevent it from moving foreward
-            if((o instanceof Wall) || (o instanceof Tank)) {
+            //if tank collide with another tank prevent it from moving towards it
+            if((o instanceof Tank)) {
                 //move the tank forward if tank is moving backwards
                 if(this.DownPressed) {
                     this.setX(this.getX()+this.getVx());
@@ -126,10 +126,7 @@ public class Tank extends moveable {
                     this.setX(this.getX()-this.getVx());
                     this.setY(this.getY()-this.getVy());
                 }
-                //if instance of power up, get the effect of the power up then destory powerup
-            } else if((o instanceof powerUp)) {
-                ((powerUp) o).setEffects(this);
-                o.destroy();
+
             }
         }
 
@@ -216,6 +213,8 @@ public class Tank extends moveable {
     }
     public int getFireRate(){return this.fireRate;}
     public int getLives(){return this.lives;}
+    public boolean isDownPressed() { return DownPressed; }
+    public boolean isUpPressed() { return UpPressed; }
 
     //setters
     public void takeDamage(){this.health--;}

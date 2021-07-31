@@ -24,7 +24,17 @@ public abstract class powerUp extends gameObject {
 
 
     @Override
-    public void resolveCollision(gameObject o) {}
+    public void resolveCollision(gameObject o) {
+        if(this.getHitbox().intersects(o.getHitbox())) {
+            if(o instanceof Tank) {
+                //update tank effects
+                this.setEffects((Tank) o);
+                //destroy powerup after its collected
+                super.destroy();
+            }
+        }
+
+    }
 
     @Override
     public void drawImage(Graphics g) {

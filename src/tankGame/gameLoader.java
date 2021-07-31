@@ -43,13 +43,19 @@ public class gameLoader extends JPanel implements Runnable {
                     //resolve collisions with tank 1 and all other gameObjects
                     //tank 1 at index 0 so start at index 1
                     for(int i = 1; i < gameObjects.size(); i++) {
+                        //resolve collision for bullets of t1
                         t1.resolveCollision(gameObjects.get(i));
+                        //resolve collision for t1
+                        gameObjects.get(i).resolveCollision(t1);
                         if(gameObjects.get(i).isDestroyed()) gameObjects.remove(i);
                     }
                     //resolve collisions with tank 2 and all other gameObjects
                     for(int i = 0; i < gameObjects.size(); i++) {
                         if(i == 1) i++;//tank2 at index 1 so skip index 1
+                        //resolve collision for bullets of t2
                         t2.resolveCollision(gameObjects.get(i));
+                        //resolve collision for t2
+                        gameObjects.get(i).resolveCollision(t2);
                         if(gameObjects.get(i).isDestroyed()) gameObjects.remove(i);
                     }
                 } catch(ConcurrentModificationException e) {
@@ -166,7 +172,7 @@ public class gameLoader extends JPanel implements Runnable {
         Tank t1 = (Tank)gameObjects.get(0);
         Tank t2 = (Tank)gameObjects.get(1);
         try {
-            //add gameObjects to buffer
+            //add gameObjects to buffer and paint each gameObject
             this.gameObjects.forEach(gameObject -> gameObject.drawImage(buffer));
 
         } catch (ConcurrentModificationException e) {
