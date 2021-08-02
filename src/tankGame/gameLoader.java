@@ -237,7 +237,6 @@ public class gameLoader extends JPanel implements Runnable {
                 Clip clip;
                 try {
                     //background music code found on https://www.codegrepper.com/code-examples/java/music+loop+java
-                    //AudioInputStream music = AudioSystem.getAudioInputStream(new File("resources/Music.wav"));
                     AudioInputStream music = AudioSystem.getAudioInputStream(Objects.requireNonNull(gameLoader.class.getClassLoader().getResource("Music.wav")));
                     clip = AudioSystem.getClip();
                     clip.open(music);
