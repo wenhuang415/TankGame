@@ -16,6 +16,7 @@ public class trap extends gameObject {
     @Override
     public void resolveCollision(gameObject o) {
         if(this.getHitbox().intersects(o.getHitbox())) {
+            //if collided with a tank then damage the tank every 40 ticks
             if(o instanceof Tank && gameLoader.tickCount%40==0) {
                 ((Tank) o).takeDamage();
                 System.out.println("HP: " + ((Tank) o).getHealth());

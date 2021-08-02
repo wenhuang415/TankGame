@@ -29,7 +29,7 @@ public class Tank extends moveable {
     private boolean ShootPressed;
 
 
-
+    //constructor
     public Tank(int x, int y, BufferedImage img) {
         super(x, y,0,img,0 ,0 , 2);
         this.ammo = new ArrayList<>();
@@ -240,7 +240,7 @@ public class Tank extends moveable {
         g2d.drawImage(this.getImg(), rotation, null);
         //draw each bullet that tank fired
         this.ammo.forEach(bullet -> bullet.drawImage(g));
-        g2d.setColor(Color.CYAN);
+        //g2d.setColor(Color.CYAN);
         g2d.drawImage(this.getImg(), rotation, null);
         g2d.drawRect(this.getX(),this.getY(),this.getImg().getWidth(),this.getImg().getHeight());
     }
